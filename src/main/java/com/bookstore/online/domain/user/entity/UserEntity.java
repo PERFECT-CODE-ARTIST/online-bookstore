@@ -13,9 +13,10 @@ import lombok.*;
 @Entity(name = "users")
 @Table(name = "users")
 public class UserEntity {
-    @Id
-    private String userId;
-    private String name;
-    private String email;
-    private String password;
+
+  @Id
+  private String userId;
+  private String name;
+  private String email;
+  private String password;
 }

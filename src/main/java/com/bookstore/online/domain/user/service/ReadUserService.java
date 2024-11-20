@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReadUserService {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    public UserEntity findUserByUserId(String userId) {
-        return userRepository.findByUserId(userId);
-    }
+  public UserEntity findUserByUserId(String userId) {
+    return userRepository.findByUserId(userId);
+  }
 }

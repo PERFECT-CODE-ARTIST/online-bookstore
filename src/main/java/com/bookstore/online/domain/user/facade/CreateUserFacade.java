@@ -15,34 +15,34 @@ import org.springframework.validation.FieldError;
 @RequiredArgsConstructor
 public class CreateUserFacade {
 
-    private final CreateUserService createUserService;
-    private final ReadUserService readUserService;
+  private final CreateUserService createUserService;
+  private final ReadUserService readUserService;
 
-    @Transactional(rollbackFor = Exception.class)
-    public void signup(ReqSignupDto dto, BindingResult bindingResult) {
-        if (!dto.getPassword().equals(dto.getCheckPassword())) {
-            FieldError fieldError = new FieldError(
-                    "passwordMismatch",
-                    "passwordMismatch",
-                    "비밀번호가 일치하지 않습니다.");
-            bindingResult.addError(fieldError);
-        }
-
-        UserEntity user = readUserService.findUserByUserId(dto.getUserId());
-        System.out.println(user);
-        if (user != null) {
-            FieldError fieldError = new FieldError(
-                    "duplicateUser",
-                    "duplicateUser",
-                    "사용할 수 없는 아이디입니다."
-            );
-            bindingResult.addError(fieldError);
-        }
-
-        if (bindingResult.hasErrors()) {
-            throw new SignupValidException(bindingResult.getFieldErrors());
-        }
-        System.out.println("success");
-        createUserService.saveUser(dto);
+  @Transactional(rollbackFor = Exception.class)
+  public boolean signup(ReqSignupDto dto, BindingResult bindingResult) {
+    if (!dto.password().equals(dto.checkPassword())) {
+      FieldError fieldError = new FieldError(
+          "passwordMismatch",
+          "passwordMismatch",
+          "비밀번호가 일치하지 않습니다.");
+      bindingResult.addError(fieldError);
     }
+
+    UserEntity user = readUserService.findUserByUserId(dto.userId());
+    System.out.println(user);
+    if (user != null) {
+      FieldError fieldError = new FieldError(
+          "duplicateUser",
+          "duplicateUser",
+          "사용할 수 없는 아이디입니다."
+      );
+      bindingResult.addError(fieldError);
+    }
+
+    if (bindingResult.hasErrors()) {
+      throw new SignupValidException(bindingResult.getFieldErrors());
+    }
+    createUserService.saveUser(dto);
+    return true;
+  }
 }

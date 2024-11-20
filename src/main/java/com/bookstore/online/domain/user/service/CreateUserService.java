@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CreateUserService {
 
-    private final UserRepository userRepository;
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+  private final UserRepository userRepository;
+  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public void saveUser(ReqSignupDto dto) {
-        userRepository.save(dto.toEntity(passwordEncoder));
-    }
+  public void saveUser(ReqSignupDto dto) {
+    userRepository.save(dto.toEntity(passwordEncoder));
+  }
 }
