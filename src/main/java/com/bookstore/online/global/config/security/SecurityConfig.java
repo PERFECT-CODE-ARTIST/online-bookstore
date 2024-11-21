@@ -5,6 +5,7 @@ import com.bookstore.online.global.handler.AuthenticationHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,7 +25,13 @@ public class SecurityConfig {
     http.authorizeHttpRequests(request -> request
             .requestMatchers(
                 AntPathRequestMatcher.antMatcher("/api/v1/user/**")
-            ).permitAll().anyRequest().authenticated())
+            ).permitAll()
+            .requestMatchers(HttpMethod.GET,
+                "/api/v1/book/**",
+                "/api/v1/category/**",
+                "/api/v1/orders",
+                "/api/v1/order-items",
+                "/api/v1/review/**").permitAll().anyRequest().authenticated())
         .csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
