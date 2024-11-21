@@ -17,6 +17,9 @@ public class ReviewService {
 
   // 리뷰 작성
   public void postReview(ReviewEntity reviewEntity) {
+    if (reviewRepository.existsByBookNumberAndUserId(reviewEntity.getBookNumber(), reviewEntity.getUserId())) {
+      throw new IllegalArgumentException("이미 해당 책에 대한 리뷰를 작성했습니다.");
+    }
     reviewRepository.save(reviewEntity);
   }
 

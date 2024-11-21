@@ -19,11 +19,11 @@ public class ReviewFacade {
   private final ReviewService reviewService;
 
   // 리뷰 작성
-  public ResponseEntity<ResponseDto> postReview(PostReviewRequestDto dto) {
+  public ResponseEntity<ResponseDto> postReview(PostReviewRequestDto dto, String userId) {
 
     try {
 
-      ReviewEntity reviewEntity = new ReviewEntity(dto);
+      ReviewEntity reviewEntity = new ReviewEntity(dto, userId);
       reviewService.postReview(reviewEntity);
 
     } catch (Exception exception) {

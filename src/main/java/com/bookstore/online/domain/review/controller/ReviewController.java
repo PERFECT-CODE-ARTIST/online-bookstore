@@ -32,7 +32,7 @@ public class ReviewController {
       @RequestBody @Valid PostReviewRequestDto requestBody,
       @AuthenticationPrincipal  String userId
   ) {
-    ResponseEntity<ResponseDto> response = reviewFacade.postReview(requestBody);
+    ResponseEntity<ResponseDto> response = reviewFacade.postReview(requestBody, userId);
     return response;
   }
 

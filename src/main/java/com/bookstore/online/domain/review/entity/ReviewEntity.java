@@ -32,10 +32,11 @@ public class ReviewEntity {
   private String comment;
 
   // 리뷰 작성 시 데이터를 삽입하기 위한 생성자
-  public ReviewEntity(PostReviewRequestDto dto) {
+  public ReviewEntity(PostReviewRequestDto dto, String userId) {
     this.bookNumber = dto.getBookNumber();
     this.rating = dto.getRating();
     this.comment = dto.getComment();
+    this.userId = userId;
   }
 
   // 리뷰 수정을 위한 생성자
