@@ -39,10 +39,8 @@ public class ReviewService {
   }
 
   // 리뷰 불러오기 (유저 기준)
-  public void getReviewOfUserId(String userId) {
-    List<ReviewEntity> reviewEntities = new ArrayList<>();
-    reviewRepository.findByUserIdOrderByReviewNumberDesc(userId);
-    GetReviewListResponseDto.success(reviewEntities);
+  public List<ReviewEntity> getReviewOfUserId(String userId) {
+    return reviewRepository.findByUserIdOrderByReviewNumberDesc(userId);
   }
 
   // 리뷰 수정하기

@@ -55,9 +55,9 @@ public class ReviewController {
   }
 
   // 리뷰 불러오기 (유저 기준)
-  @GetMapping("/{userId}")
+  @GetMapping("/user-reviews")
   public ResponseEntity<? super GetReviewListResponseDto> getReviewListOfBookNumber(
-      @PathVariable("userId") String userId
+      @AuthenticationPrincipal String userId
   ) {
     ResponseEntity<? super GetReviewListResponseDto> response = reviewFacade.getReviewListOfUserId(userId);
     return response;

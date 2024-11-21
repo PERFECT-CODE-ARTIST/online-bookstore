@@ -66,18 +66,20 @@ public class ReviewFacade {
   }
 
   // 리뷰 불러오기(유저 기준)
-  public ResponseEntity<ResponseDto> getReviewListOfUserId(String userId) {
+  public ResponseEntity<? super GetReviewListResponseDto> getReviewListOfUserId(String userId) {
+
+    List<ReviewEntity> reviewEntities = new ArrayList<>();
 
     try {
 
-      reviewService.getReviewOfUserId(userId);
+      reviewEntities = reviewService.getReviewOfUserId(userId);
 
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
     }
 
-    return GetReviewListResponseDto.success();
+    return GetReviewListResponseDto.success(reviewEntities);
   }
 
   // 리뷰 수정하기
