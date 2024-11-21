@@ -28,7 +28,7 @@ public class CategoryEntity {
     this.categoryName = dto.getCategoryName();
   }
 
-  public void patchCategory(PatchEditCategoryRequestDto dto){
+  public void patchCategory(PatchEditCategoryRequestDto dto) {
     this.categoryName = dto.getCategoryName();
   }
 }
