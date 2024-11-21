@@ -46,7 +46,7 @@ public class ReviewController {
   }
 
   // 리뷰 불러오기 (책 기준)
-  @GetMapping("/{bookNumber}")
+  @GetMapping("/book-reviews/{bookNumber}")
   public ResponseEntity<? super GetReviewListResponseDto> getReviewListOfBookNumber(
       @PathVariable("bookNumber") Integer bookNumber
   ) {

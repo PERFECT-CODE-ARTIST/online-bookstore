@@ -53,18 +53,19 @@ public class ReviewFacade {
   // 리뷰 불러오기(책 기준)
   public ResponseEntity<? super GetReviewListResponseDto> getReviewListOfBookNumber(Integer bookNumber) {
 
-    List<ReviewEntity> reviewEntities = new ArrayList<>();
-
     try {
 
-      reviewEntities = reviewService.getReviewOfBookNumber(bookNumber);
+      if (bookNumber == null || bookNumber <= 0) {
+        throw new IllegalArgumentException("유효하지 않은 책번호입니다.");
+      }
+
+      List<ReviewEntity> reviewEntities = reviewService.getReviewOfBookNumber(bookNumber);
+      return GetReviewListResponseDto.success(reviewEntities);
 
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
     }
-
-    return GetReviewListResponseDto.success(reviewEntities);
   }
 
   // 리뷰 불러오기(유저 기준)
