@@ -64,7 +64,7 @@ public class ReviewController {
   }
 
   // 리뷰 수정
-  @PatchMapping("/{reviewNumber}")
+  @PatchMapping("/review-update/{reviewNumber}")
   public ResponseEntity<ResponseDto> patchReview(
       @RequestBody @Valid PatchReviewRequestDto requestBody,
       @PathVariable("reviewNumber") Integer reviewNumber,
