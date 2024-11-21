@@ -32,10 +32,8 @@ public class ReviewService {
   }
 
   // 리뷰 불러오기 (책 기준)
-  public void getReviewOfBookNumber(Integer bookNumber) {
-    List<ReviewEntity> reviewEntities = new ArrayList<>();
-    reviewRepository.findByBookNumberOrderByReviewNumberDesc(bookNumber);
-    GetReviewListResponseDto.success(reviewEntities);
+  public List<ReviewEntity> getReviewOfBookNumber(Integer bookNumber) {
+    return reviewRepository.findByBookNumberOrderByReviewNumberDesc(bookNumber);
   }
 
   // 리뷰 불러오기 (유저 기준)
