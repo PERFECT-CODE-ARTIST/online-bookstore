@@ -37,11 +37,12 @@ public class ReviewController {
   }
 
   // 리뷰 삭제
-  @DeleteMapping("/{reviewNumber}")
+  @DeleteMapping("/delete-review/{reviewNumber}")
   public ResponseEntity<ResponseDto> deleteReview(
-      @PathVariable("reviewNumber") Integer reviewNumber
+      @PathVariable("reviewNumber") Integer reviewNumber,
+      @AuthenticationPrincipal String userId
   ) {
-    ResponseEntity<ResponseDto> response = reviewFacade.deleteReview(reviewNumber);
+    ResponseEntity<ResponseDto> response = reviewFacade.deleteReview(reviewNumber, userId);
     return response;
   }
 

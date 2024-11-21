@@ -24,7 +24,7 @@ public class ReviewService {
   }
 
   // 리뷰 삭제
-  public void deleteReview(Integer reviewNumber) {
+  public void deleteReview(Integer reviewNumber, String userId) {
     ReviewEntity reviewEntity = reviewRepository.findByReviewNumber(reviewNumber);
     if (reviewEntity == null) return;
 

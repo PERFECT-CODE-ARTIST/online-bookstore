@@ -35,11 +35,11 @@ public class ReviewFacade {
   }
 
   // 리뷰 삭제
-  public ResponseEntity<ResponseDto> deleteReview(Integer reviewNumber) {
+  public ResponseEntity<ResponseDto> deleteReview(Integer reviewNumber, String userId) {
 
     try {
 
-      reviewService.deleteReview(reviewNumber);
+      reviewService.deleteReview(reviewNumber, userId);
 
     } catch (Exception exception) {
       exception.printStackTrace();
