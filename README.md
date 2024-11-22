@@ -11,3 +11,4 @@
 4. 책 조회 및 정렬 기능 & 책 추천 기능 유니님 -> 하명윤님
 
 ## ERD 구성
+<img width="669" alt="ERD 구성도 " src="https://github.com/user-attachments/assets/4a55c0a6-5bd2-412b-aa36-f2b1eb44f9ab">
