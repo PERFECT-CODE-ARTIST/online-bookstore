@@ -10,13 +10,14 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ReadCategoryService {
+
   private final CategoryRepository categoryRepository;
 
-  public List<CategoryEntity> readCategoryAllList( Pageable pageable) {
+  public List<CategoryEntity> readCategoryAllList(Pageable pageable) {
     return categoryRepository.findByOrderByCategoryNameAsc(pageable);
   }
 
-  public CategoryEntity findCategoryNumber(Integer categoryNumber){
+  public CategoryEntity findCategoryNumber(Integer categoryNumber) {
     return categoryRepository.findByCategoryNumber(categoryNumber);
   }
 

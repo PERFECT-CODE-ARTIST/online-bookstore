@@ -14,7 +14,9 @@ import org.springframework.stereotype.Repository;
 public interface BooksRepository extends JpaRepository<BooksEntity, Integer> {
 
   List<BooksEntity> findByCategoryNumber(Integer categoryNumber);
+
   BooksEntity findByBookNumber(Integer bookNumber);
+
   List<BooksEntity> findByOrderByBookNameAsc(Pageable pageable);
 
   @Query(value =

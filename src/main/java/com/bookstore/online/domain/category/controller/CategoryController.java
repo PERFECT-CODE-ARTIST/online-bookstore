@@ -26,19 +26,20 @@ public class CategoryController {
   private final CategoryFacade categoryFacade;
 
   // localhost:8080/api/v1/category?page=0&size=5 0번페이지에 5개를 불러온다.
-  @GetMapping(value = {"","/"})
+  @GetMapping(value = {"", "/"})
   public ResponseEntity<? super GetCategoryListResponseDto> getCategory(
       Pageable pageable
   ) {
-    ResponseEntity<? super GetCategoryListResponseDto> response = categoryFacade.getCategoryList( pageable );
+    ResponseEntity<? super GetCategoryListResponseDto> response = categoryFacade.getCategoryList(
+        pageable);
     return response;
   }
 
   @PostMapping("/")
   public ResponseEntity<ResponseDto> postCategory(
       @RequestBody @Valid PostCreateCategoryRequestDto requestBody
-  ){
-    ResponseEntity<ResponseDto> response  = categoryFacade.postCreateCategory(requestBody);
+  ) {
+    ResponseEntity<ResponseDto> response = categoryFacade.postCreateCategory(requestBody);
     return response;
   }
 
@@ -46,15 +47,16 @@ public class CategoryController {
   public ResponseEntity<ResponseDto> updateCategory(
       @RequestBody @Valid PatchEditCategoryRequestDto requestBody,
       @PathVariable("categoryNumber") Integer categoryNumber
-  ){
-    ResponseEntity<ResponseDto> response = categoryFacade.patchCategory(requestBody, categoryNumber);
+  ) {
+    ResponseEntity<ResponseDto> response = categoryFacade.patchCategory(requestBody,
+        categoryNumber);
     return response;
   }
 
   @DeleteMapping("/{categoryNumber}")
   public ResponseEntity<ResponseDto> deleteCategory(
       @PathVariable("categoryNumber") Integer categoryNumber
-  ){
+  ) {
     ResponseEntity<ResponseDto> response = categoryFacade.deleteCategory(categoryNumber);
     return response;
   }

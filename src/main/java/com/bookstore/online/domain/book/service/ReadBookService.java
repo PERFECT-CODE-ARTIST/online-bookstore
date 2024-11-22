@@ -39,7 +39,7 @@ public class ReadBookService {
 //    return booksRepository.getBookOrderCountList();
 //  }
 
-  public List<BooksEntity> resentlyBookList(){
+  public List<BooksEntity> resentlyBookList() {
     return booksRepository.getRecentlyBookList();
   }
 

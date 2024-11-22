@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Integer> {
+
   List<CategoryEntity> findByOrderByCategoryNameAsc(Pageable pageable);
+
   CategoryEntity findByCategoryNumber(Integer categoryNumber);
 }

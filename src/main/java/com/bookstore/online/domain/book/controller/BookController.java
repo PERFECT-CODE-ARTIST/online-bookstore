@@ -107,7 +107,6 @@ public class BookController {
 //  @GetMapping("/recommend/category-best-seller")
 //      @AuthenticationPrincipal String userId
 //  ) {
-//    System.out.println(userId);
 //    ResponseEntity<? super GetBookListResponseDto> response = bookFacade.getCategoryBestSellerBookList(userId);
 //    return response;
 //  }

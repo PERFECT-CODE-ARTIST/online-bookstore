@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class DeleteBookService {
+
   private final BooksRepository booksRepository;
 
   public void deleteBook(BooksEntity booksEntity) {

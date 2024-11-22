@@ -28,12 +28,12 @@ public class CategoryFacade {
   private final ReadCategoryService readCategoryService;
 
   @Transactional
-  public ResponseEntity<ResponseDto> postCreateCategory(PostCreateCategoryRequestDto dto){
-    try{
+  public ResponseEntity<ResponseDto> postCreateCategory(PostCreateCategoryRequestDto dto) {
+    try {
       CategoryEntity categoryEntity = new CategoryEntity(dto);
       createCategoryService.createCategory(categoryEntity);
 
-    }catch (Exception exception){
+    } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
@@ -41,10 +41,12 @@ public class CategoryFacade {
   }
 
   @Transactional
-  public ResponseEntity<ResponseDto> deleteCategory(Integer categoryNumber){
-    try{
+  public ResponseEntity<ResponseDto> deleteCategory(Integer categoryNumber) {
+    try {
       CategoryEntity categoryEntity = deleteCategoryService.findCategoryNumber(categoryNumber);
-      if(categoryEntity == null) throw new Error("존재 하지 않는 카테고리 입니다.");
+      if (categoryEntity == null) {
+        throw new Error("존재 하지 않는 카테고리 입니다.");
+      }
       deleteCategoryService.deleteCategory(categoryNumber);
 
     } catch (Exception exception) {
@@ -73,7 +75,7 @@ public class CategoryFacade {
   }
 
   @Transactional(readOnly = true)
-  public ResponseEntity<? super GetCategoryListResponseDto> getCategoryList( Pageable pageable) {
+  public ResponseEntity<? super GetCategoryListResponseDto> getCategoryList(Pageable pageable) {
     List<CategoryEntity> categoryEntityList = new ArrayList<>();
     try {
       categoryEntityList = readCategoryService.readCategoryAllList(pageable);

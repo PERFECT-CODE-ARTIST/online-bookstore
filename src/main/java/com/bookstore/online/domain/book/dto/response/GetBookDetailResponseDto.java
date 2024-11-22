@@ -41,8 +41,10 @@ public class GetBookDetailResponseDto extends ResponseDto {
     this.bookCount = booksEntity.getBookCount();
   }
 
-  public static ResponseEntity<GetBookDetailResponseDto> success(BooksEntity booksEntity, CategoryEntity categoryEntity) {
-    GetBookDetailResponseDto responseBody = new GetBookDetailResponseDto(booksEntity, categoryEntity);
+  public static ResponseEntity<GetBookDetailResponseDto> success(BooksEntity booksEntity,
+      CategoryEntity categoryEntity) {
+    GetBookDetailResponseDto responseBody = new GetBookDetailResponseDto(booksEntity,
+        categoryEntity);
     return ResponseEntity.status(HttpStatus.OK).body(responseBody);
   }
 

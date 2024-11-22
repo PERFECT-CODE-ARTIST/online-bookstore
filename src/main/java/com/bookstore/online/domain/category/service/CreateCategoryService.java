@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CreateCategoryService {
+
   private final CategoryRepository categoryRepository;
 
   public void createCategory(CategoryEntity categoryEntity) {

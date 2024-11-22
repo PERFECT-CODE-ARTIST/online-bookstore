@@ -41,13 +41,15 @@ public class BookFacade {
     }
     return ResponseDto.success();
   }
+
   @Transactional
   public ResponseEntity<ResponseDto> patchBook(PatchUpdateBookRequestDto dto, Integer bookNumber) {
     try {
       BooksEntity booksEntity = readBookService.findBookNumber(bookNumber);
 
-      if (booksEntity == null)
+      if (booksEntity == null) {
         throw new Error("존재하지 않는 책입니다.");
+      }
       booksEntity.patch(dto);
       updateBookService.updateBook(booksEntity);
 
@@ -62,8 +64,9 @@ public class BookFacade {
   public ResponseEntity<ResponseDto> deletebook(Integer bookNumber) {
     try {
       BooksEntity booksEntity = readBookService.findBookNumber(bookNumber);
-      if (booksEntity == null)
+      if (booksEntity == null) {
         throw new Error("존재하지 않는 책입니다.");
+      }
       deleteBookService.deleteBook(booksEntity);
 
     } catch (Exception exception) {
@@ -78,7 +81,7 @@ public class BookFacade {
     List<BooksEntity> booksEntityList = new ArrayList<>();
     try {
       booksEntityList = readBookService.BookList(pageable);
-      for (BooksEntity booksEntity : booksEntityList) { 
+      for (BooksEntity booksEntity : booksEntityList) {
         Integer categoryNumebr = booksEntity.getCategoryNumber();
         CategoryEntity categoryEntity = readCategoryService.findCategoryNumber(categoryNumebr);
         Book book = new Book(booksEntity, categoryEntity);
@@ -111,7 +114,8 @@ public class BookFacade {
     return GetBookDetailResponseDto.success(booksEntity, categoryEntity);
   }
 
-  public ResponseEntity<? super GetBookListResponseDto> getSearchBookList(Integer categoryNumber, String orderSet, Integer page) {
+  public ResponseEntity<? super GetBookListResponseDto> getSearchBookList(Integer categoryNumber,
+      String orderSet, Integer page) {
     List<Book> bookList = new ArrayList<>();
     List<BooksEntity> booksEntityList = new ArrayList<>();
     try {
@@ -198,21 +202,27 @@ public class BookFacade {
 //    List<Book> bookList = new ArrayList<>();
 //    List<BooksEntity> booksEntityList =new ArrayList<>();
 //    try {
-//     UserEntity userEntity  = readUserService.findUserByUserId(userId);
-//     if(userEntity == null) throw new Error("존재 하지 않는 유저 입니다.");
-//
-//      GetUserOrderPurchasedBookResultSet resultSet = readBookService.userPurchasedBookList(userId); //현재 고정값 넣어둠
-//      if(resultSet == null ) {
-//        throw new Error("구매한 목록이 없습니다123.");
+// UserEntity userEntity = userService.findUserId(userId);
+//      if (userEntity == null) {
+//        throw new Error("존재하지 않는 유저 입니다.");
 //      }
-//
-//      Integer categoryNumber = resultSet.categoryNumber().intValue();
-//      booksEntityList = readBookService.findCategoryNumber(categoryNumber);
-//      for (BooksEntity booksEntity : booksEntityList) {
-//        Integer bookNumber = booksEntity.getBookNumber();
-//        CategoryEntity categoryEntity = readCategoryService.findCategoryNumber(categoryNumber);
-//        Book book = new Book(booksEntity, categoryEntity);
-//        bookList.add(book);
+//      GetUserOrderPurchasedBookResultSet resultSet = readBookService.userPurchasedBookList(userId);
+//      if (resultSet == null) {
+//        throw new Error("구매한 목록이 없습니다.");
+//      }
+//      Integer categoryNumber = resultSet.categoryNumber();
+//      List<GetBookOrderCountResultSet> bestSellerBookNumber = readBookService.bookOrderCount();
+//      if (bestSellerBookNumber.isEmpty()) {
+//        throw new Error("베스트셀러 목록이 없습니다.");
+//      }
+//      for (GetBookOrderCountResultSet bestSellerBook : bestSellerBookNumber) {
+//        Integer bookNumber = bestSellerBook.bookNumber();
+//        BooksEntity booksEntity = readBookService.findBookNumber(bookNumber);
+//        if (booksEntity.getCategoryNumber().equals(categoryNumber)) {
+//          CategoryEntity categoryEntity = readCategoryService.findCategoryNumber(categoryNumber);
+//          Book book = new Book(booksEntity, categoryEntity);
+//          bookList.add(book);
+//        }
 //      }
 //
 //    } catch (Exception exception) {
@@ -221,6 +231,5 @@ public class BookFacade {
 //    }
 //    return GetBookListResponseDto.success(bookList);
     return null;
-
   }
 }
