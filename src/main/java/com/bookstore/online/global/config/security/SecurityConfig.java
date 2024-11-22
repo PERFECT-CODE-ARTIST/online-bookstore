@@ -29,7 +29,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET,
                 "/api/v1/book/**",
                 "/api/v1/category/**",
-                "/api/v1/orders",
+                "/api/v1/orders/**",
                 "/api/v1/order-items",
                 "/api/v1/review/**").permitAll().anyRequest().authenticated())
         .csrf(AbstractHttpConfigurer::disable)

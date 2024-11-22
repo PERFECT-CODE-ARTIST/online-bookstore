@@ -23,4 +23,9 @@ public class ResponseDto {
     ResponseDto responseBody = new ResponseDto("DBA", "DATABASE_ERROR");
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
   }
+
+  public static ResponseEntity<ResponseDto> notOrderNumber() {
+    ResponseDto responseBody = new ResponseDto("NON","not order-number");
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+  }
 }
