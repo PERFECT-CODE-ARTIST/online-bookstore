@@ -4,19 +4,13 @@ import com.bookstore.online.domain.book.dto.request.PatchUpdateBookRequestDto;
 import com.bookstore.online.domain.book.dto.request.PostCreateBookRequestDto;
 import com.bookstore.online.domain.book.dto.response.GetBookDetailResponseDto;
 import com.bookstore.online.domain.book.dto.response.GetBookListResponseDto;
-import com.bookstore.online.domain.book.facade.AlgorithmBookFacde;
-import com.bookstore.online.domain.book.facade.CreateBookFacade;
-import com.bookstore.online.domain.book.facade.DeleteBookFacade;
-import com.bookstore.online.domain.book.facade.FilterBookFacade;
-import com.bookstore.online.domain.book.facade.PatchBookFacade;
-import com.bookstore.online.domain.book.facade.ReadBookDetailFacade;
-import com.bookstore.online.domain.book.facade.ReadBookFacade;
-import com.bookstore.online.domain.book.facade.SearchBookFacade;
+import com.bookstore.online.domain.book.facade.BookFacade;
 import com.bookstore.online.global.dto.ResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -32,19 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BookController {
 
-  private final CreateBookFacade createBookFacade;
-  private final ReadBookFacade readBookFacade;
-  private final FilterBookFacade filterBookFacade;
-  private final AlgorithmBookFacde algorithmBookFacade;
-  private final SearchBookFacade searchBookFacade;
-  private final PatchBookFacade patchBookFacade;
-  private final DeleteBookFacade deleteBookFacade;
-  private final ReadBookDetailFacade readBookDetailFacade;
+ private final BookFacade bookFacade;
 
-
+  //localhost:8080/api/v1/book?page=0&size=10
   @GetMapping(value = {"", "/"})
-  public ResponseEntity<? super GetBookListResponseDto> getAllBookList() {
-    ResponseEntity<? super GetBookListResponseDto> response = readBookFacade.getAllBookList();
+  public ResponseEntity<? super GetBookListResponseDto> getAllBookList(
+      Pageable pageable
+  ) {
+    ResponseEntity<? super GetBookListResponseDto> response = bookFacade.getAllBookList(pageable);
     return response;
   }
 
@@ -52,7 +41,7 @@ public class BookController {
   public ResponseEntity<? super GetBookDetailResponseDto> getBookDetail(
       @PathVariable("bookNumber") Integer bookNumber
   ) {
-    ResponseEntity<? super GetBookDetailResponseDto> response = readBookDetailFacade.bookDetail(bookNumber);
+    ResponseEntity<? super GetBookDetailResponseDto> response = bookFacade.bookDetail(bookNumber);
     return response;
   }
 
@@ -61,7 +50,7 @@ public class BookController {
   public ResponseEntity<ResponseDto> postBook(
       @RequestBody @Valid PostCreateBookRequestDto requestBody
   ) {
-    ResponseEntity<ResponseDto> response = createBookFacade.postCreateBook(requestBody);
+    ResponseEntity<ResponseDto> response = bookFacade.postCreateBook(requestBody);
     return response;
   }
 
@@ -70,7 +59,7 @@ public class BookController {
       @RequestBody @Valid PatchUpdateBookRequestDto requestBody,
       @PathVariable("bookNumber") Integer bookNumber
   ){
-    ResponseEntity<ResponseDto> response = patchBookFacade.patchBook(requestBody,bookNumber);
+    ResponseEntity<ResponseDto> response = bookFacade.patchBook(requestBody,bookNumber);
     return response;
   }
 
@@ -78,7 +67,7 @@ public class BookController {
   public ResponseEntity<ResponseDto> deleteBook(
       @PathVariable("bookNumber") Integer bookNumber
   ){
-    ResponseEntity<ResponseDto> response = deleteBookFacade.deletebook(bookNumber);
+    ResponseEntity<ResponseDto> response = bookFacade.deletebook(bookNumber);
     return response;
   }
 
@@ -86,39 +75,40 @@ public class BookController {
   @GetMapping("/search")
   public ResponseEntity<? super GetBookListResponseDto> getBooksList(
       @RequestParam("categoryNumber") Integer categoryNumber,
-      @RequestParam("orderSet") String orderSet
+      @RequestParam("orderSet") String orderSet,
+      @RequestParam("page") Integer page
   ) {
-    ResponseEntity<? super GetBookListResponseDto> response = searchBookFacade.getSearchBookList(
-        categoryNumber, orderSet);
+    ResponseEntity<? super GetBookListResponseDto> response = bookFacade.getSearchBookList(categoryNumber, orderSet, page);
     return response;
   }
 
   @GetMapping("/discounts")
-  public ResponseEntity<? super GetBookListResponseDto> getBooksDiscountsList() {
-    ResponseEntity<? super GetBookListResponseDto> response = filterBookFacade.getBookDiscountList();
+  public ResponseEntity<? super GetBookListResponseDto> getBooksDiscountsList(
+      @RequestParam("page") Integer page
+  ) {
+    ResponseEntity<? super GetBookListResponseDto> response = bookFacade.getBookDiscountList(page);
     return response;
   }
 
   @GetMapping("/recently-books")
   public ResponseEntity<? super GetBookListResponseDto> getBooksRecentlyBooksList() {
-    ResponseEntity<? super GetBookListResponseDto> response = filterBookFacade.getRecentlyBookList();
+    ResponseEntity<? super GetBookListResponseDto> response = bookFacade.getRecentlyBookList();
     return response;
   }
 
  // 추후 추가 기능
 //  @GetMapping("/best-seller")
 //  public ResponseEntity<? super GetBookListResponseDto> getBooksBestSellerList() {
-//    ResponseEntity<? super GetBookListResponseDto> response = filterBookFacade.getBestSellerBookList();
+//    ResponseEntity<? super GetBookListResponseDto> response = bookFacade.getBestSellerBookList();
 //    return response;
 //  }
 
 
 //  @GetMapping("/recommend/category-best-seller")
-//  public ResponseEntity<? super GetBookListResponseDto> getBooksCategoryBestSellerList(
 //      @AuthenticationPrincipal String userId
 //  ) {
 //    System.out.println(userId);
-//    ResponseEntity<? super GetBookListResponseDto> response = algorithmBookFacade.getCategoryBestSellerBookList(userId);
+//    ResponseEntity<? super GetBookListResponseDto> response = bookFacade.getCategoryBestSellerBookList(userId);
 //    return response;
 //  }
 }
