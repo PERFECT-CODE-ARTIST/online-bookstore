@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -40,7 +41,7 @@ public class BookFacade {
     }
     return ResponseDto.success();
   }
-
+  @Transactional
   public ResponseEntity<ResponseDto> patchBook(PatchUpdateBookRequestDto dto, Integer bookNumber) {
     try {
       BooksEntity booksEntity = readBookService.findBookNumber(bookNumber);
@@ -57,6 +58,7 @@ public class BookFacade {
     return ResponseDto.success();
   }
 
+  @Transactional
   public ResponseEntity<ResponseDto> deletebook(Integer bookNumber) {
     try {
       BooksEntity booksEntity = readBookService.findBookNumber(bookNumber);
@@ -76,7 +78,7 @@ public class BookFacade {
     List<BooksEntity> booksEntityList = new ArrayList<>();
     try {
       booksEntityList = readBookService.BookList(pageable);
-      for (BooksEntity booksEntity : booksEntityList) {
+      for (BooksEntity booksEntity : booksEntityList) { 
         Integer categoryNumebr = booksEntity.getCategoryNumber();
         CategoryEntity categoryEntity = readCategoryService.findCategoryNumber(categoryNumebr);
         Book book = new Book(booksEntity, categoryEntity);
