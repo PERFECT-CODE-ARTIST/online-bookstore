@@ -4,6 +4,7 @@ import com.bookstore.online.domain.user.dto.request.ReqSignupDto;
 import com.bookstore.online.domain.user.entity.UserEntity;
 import com.bookstore.online.domain.user.service.CreateUserService;
 import com.bookstore.online.domain.user.service.ReadUserService;
+import com.bookstore.online.global.exception.DatabaseException;
 import com.bookstore.online.global.exception.SignupValidException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,6 @@ public class CreateUserFacade {
     }
 
     UserEntity user = readUserService.findUserByUserId(dto.userId());
-    System.out.println(user);
     if (user != null) {
       FieldError fieldError = new FieldError(
           "duplicateUser",
@@ -42,7 +42,12 @@ public class CreateUserFacade {
     if (bindingResult.hasErrors()) {
       throw new SignupValidException(bindingResult.getFieldErrors());
     }
-    createUserService.saveUser(dto);
+    try {
+      createUserService.saveUser(dto);
+    } catch (Exception e) {
+      throw new DatabaseException("DB 에러");
+    }
+
     return true;
   }
 }

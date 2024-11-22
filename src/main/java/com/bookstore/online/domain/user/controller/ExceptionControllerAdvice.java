@@ -1,5 +1,6 @@
 package com.bookstore.online.domain.user.controller;
 
+import com.bookstore.online.global.exception.DatabaseException;
 import com.bookstore.online.global.exception.SigninException;
 import com.bookstore.online.global.exception.SignupValidException;
 import javax.naming.AuthenticationException;
@@ -17,6 +18,11 @@ public class  ExceptionControllerAdvice {
 
   @ExceptionHandler(SigninException.class)
   public ResponseEntity<?> signinException(SigninException e) {
+    return ResponseEntity.badRequest().body(e.getMessage());
+  }
+
+  @ExceptionHandler(DatabaseException.class)
+  public ResponseEntity<?> databaseException(DatabaseException e) {
     return ResponseEntity.badRequest().body(e.getMessage());
   }
 
