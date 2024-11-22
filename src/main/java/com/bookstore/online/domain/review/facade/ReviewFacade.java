@@ -39,6 +39,10 @@ public class ReviewFacade {
 
     try {
 
+      if (reviewNumber == null || reviewNumber <= 0) {
+        throw new IllegalArgumentException("유효하지 않은 리뷰입니다.");
+      }
+
       reviewService.deleteReview(reviewNumber, userId);
 
     } catch (Exception exception) {
@@ -89,6 +93,10 @@ public class ReviewFacade {
   public ResponseEntity<ResponseDto> patchReview(PatchReviewRequestDto dto, Integer reviewNumber, String userId) {
 
     try {
+
+      if (reviewNumber == null || reviewNumber <= 0) {
+        throw new IllegalArgumentException("유효하지 않은 리뷰입니다.");
+      }
 
       reviewService.patchReview(dto, reviewNumber, userId);
 
