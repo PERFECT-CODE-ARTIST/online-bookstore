@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Builder
@@ -29,20 +30,25 @@ public class OrdersEntity {
   private Integer orderNumber; // 주문고유번호
   private String userId; // 고객Id
   private String orderDate; // 주문 날짜
+  @Setter
   private Integer totalPrice; // 총 가격
+  @Setter
   @Column(nullable = false)
   private String status; // 결제상태
 
   public OrdersEntity (BeforePaymentRequestDto dto) {
     this.userId = dto.getUserId();
     this.orderDate = LocalDate.now().toString();
-    this.totalPrice = dto.getTotalPrice();
   }
 
   @PrePersist
   public void proPersist(){
     if(this.status == null) {
       this.status = "결제대기";
+    }
+
+    if(this.totalPrice == null) {
+      this.totalPrice = 0;
     }
   }
 }

@@ -1,7 +1,5 @@
 package com.bookstore.online.domain.orders.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,10 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BeforePaymentRequestDto {
+public class BookInformationRequestDto {
 
-  @NotBlank
-  String userId;
-//  Integer totalPrice;
+  Integer orderNumber; // 주문번호
+  Integer bookNumber; // 책번호
+  Integer quantity; // 수량
+  Integer pricePerUnit; // 하나당가격
 
 }

@@ -14,6 +14,8 @@ public interface ResponseMessage {
   String NO_EXIST_ORDER_CODE = "No exist order code.";
   String NO_EXIST_BOOK = "No exist book id.";
   String NO_EXIST_REVIEW_NUMBER = "No exist review number.";
+  String NO_EXIST_ORDER_PRICE = "No exist order price";
+  String LACK_OF_QUANTITY ="Lack of quantity";
 
   String SIGN_IN_FAIL = "Sign in failed.";
 

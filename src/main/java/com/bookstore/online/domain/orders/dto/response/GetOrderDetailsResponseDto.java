@@ -1,13 +1,18 @@
 package com.bookstore.online.domain.orders.dto.response;
 
-import com.bookstore.online.domain.orders.dto.request.GetOrderDetailsDTO;
+import com.bookstore.online.domain.orders.dto.result.GetOrderDetailsDTO;
 import com.bookstore.online.global.dto.ResponseCode;
 import com.bookstore.online.global.dto.ResponseDto;
 import com.bookstore.online.global.dto.ResponseMessage;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+@Getter
+@Builder
+@AllArgsConstructor
 public class GetOrderDetailsResponseDto extends ResponseDto {
 
   Integer orderNumber; // 주문번호

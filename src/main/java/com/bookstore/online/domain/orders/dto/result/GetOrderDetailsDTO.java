@@ -1,11 +1,12 @@
-package com.bookstore.online.domain.orders.dto.request;
+package com.bookstore.online.domain.orders.dto.result;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class GetOrderDetailsDTO {
 
   Integer orderNumber; // 주문번호

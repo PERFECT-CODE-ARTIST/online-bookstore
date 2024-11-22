@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Builder
@@ -32,6 +33,7 @@ public class BooksEntity {
   private String publishingDate;
   private String registrationDate;
   private Integer categoryNumber;
+  @Setter
   private Integer bookCount;
 
   public BooksEntity(PostCreateBookRequestDto dto) {
