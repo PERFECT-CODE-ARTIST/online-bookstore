@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "books")
 @Table(name = "books")
 public class BooksEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer bookNumber;
@@ -45,7 +46,7 @@ public class BooksEntity {
     this.bookCount = dto.getBookCount();
   }
 
-  public void patch (PatchUpdateBookRequestDto dto){
+  public void patch(PatchUpdateBookRequestDto dto) {
     this.bookName = dto.getBookName();
     this.author = dto.getAuthor();
     this.bookPrice = dto.getBookPrice();

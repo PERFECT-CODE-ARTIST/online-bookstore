@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostCreateCategoryRequestDto{
+public class PostCreateCategoryRequestDto {
+
   @NotBlank
   private String categoryName;
 }

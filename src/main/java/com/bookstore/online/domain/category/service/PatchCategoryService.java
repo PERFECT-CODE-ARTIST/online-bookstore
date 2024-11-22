@@ -8,13 +8,14 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PatchCategoryService {
+
   private final CategoryRepository categoryRepository;
 
-  public CategoryEntity findCategoryNumber(Integer categoryNumber){
+  public CategoryEntity findCategoryNumber(Integer categoryNumber) {
     return categoryRepository.findByCategoryNumber(categoryNumber);
   }
 
-  public CategoryEntity updateCategory(CategoryEntity categoryEntity){
+  public CategoryEntity updateCategory(CategoryEntity categoryEntity) {
     return categoryRepository.save(categoryEntity);
   }
 }

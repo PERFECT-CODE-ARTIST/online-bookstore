@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class UpdateBookService {
+
   private final BooksRepository booksRepository;
 
   public void updateBook(BooksEntity booksEntity) {
