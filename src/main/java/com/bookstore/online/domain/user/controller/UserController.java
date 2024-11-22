@@ -6,6 +6,7 @@ import com.bookstore.online.domain.user.facade.CreateUserFacade;
 import com.bookstore.online.domain.user.facade.ReadUserFacade;
 import com.bookstore.online.domain.user.service.ReadUserService;
 import jakarta.validation.Valid;
+import javax.naming.Binding;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -29,8 +30,9 @@ public class UserController {
   }
 
   @PostMapping("/signin")
-  public ResponseEntity<?> signin(@RequestBody @Valid ReqSigninDto dto) {
-    return ResponseEntity.ok().body(readUserFacade.signin(dto));
+  public ResponseEntity<?> signin(@RequestBody @Valid ReqSigninDto dto,
+      BindingResult bindingResult) {
+    return ResponseEntity.ok().body(readUserFacade.signin(dto, bindingResult));
   }
 
 }
