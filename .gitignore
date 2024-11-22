@@ -197,6 +197,7 @@ gradle-app.setting
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
+# 프로퍼티즈 제외
 application.properties
 
 ### Gradle Patch ###

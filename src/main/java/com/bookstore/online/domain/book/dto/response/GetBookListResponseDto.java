@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 @Builder
 @NoArgsConstructor
 public class GetBookListResponseDto extends ResponseDto {
+
   private List<Book> bookList;
 
   public GetBookListResponseDto(List<Book> bookList) {

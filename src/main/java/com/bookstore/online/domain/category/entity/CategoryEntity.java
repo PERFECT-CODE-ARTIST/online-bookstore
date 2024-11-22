@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "categories")
 @Table(name = "categories")
 public class CategoryEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer categoryNumber;

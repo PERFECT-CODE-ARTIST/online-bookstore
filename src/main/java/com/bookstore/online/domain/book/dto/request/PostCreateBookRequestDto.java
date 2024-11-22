@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostCreateBookRequestDto {
+
   @NotNull
   private String bookName;
   @NotNull

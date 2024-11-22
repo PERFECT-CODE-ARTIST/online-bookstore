@@ -3,13 +3,11 @@ package com.bookstore.online.domain.category.controller;
 import com.bookstore.online.domain.category.dto.request.PatchEditCategoryRequestDto;
 import com.bookstore.online.domain.category.dto.request.PostCreateCategoryRequestDto;
 import com.bookstore.online.domain.category.dto.response.GetCategoryListResponseDto;
-import com.bookstore.online.domain.category.facade.CreateCategoryFacade;
-import com.bookstore.online.domain.category.facade.DeleteCategoryFacade;
-import com.bookstore.online.domain.category.facade.PatchCategoryFacade;
-import com.bookstore.online.domain.category.facade.ReadCategoryFacade;
+import com.bookstore.online.domain.category.facade.CategoryFacade;
 import com.bookstore.online.global.dto.ResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,22 +23,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CategoryController {
 
-  private final CreateCategoryFacade createCategoryFacade;
-  private final ReadCategoryFacade readCategoryFacade;
-  private final DeleteCategoryFacade deleteCategoryFacade;
-  private final PatchCategoryFacade patchCategoryFacade;
+  private final CategoryFacade categoryFacade;
 
-  @GetMapping(value = {"","/"})
-  public ResponseEntity<? super GetCategoryListResponseDto> getCategory() {
-    ResponseEntity<? super GetCategoryListResponseDto> response = readCategoryFacade.getCategoryList();
+  // localhost:8080/api/v1/category?page=0&size=5 0번페이지에 5개를 불러온다.
+  @GetMapping(value = {"", "/"})
+  public ResponseEntity<? super GetCategoryListResponseDto> getCategory(
+      Pageable pageable
+  ) {
+    ResponseEntity<? super GetCategoryListResponseDto> response = categoryFacade.getCategoryList(
+        pageable);
     return response;
   }
 
   @PostMapping("/")
   public ResponseEntity<ResponseDto> postCategory(
       @RequestBody @Valid PostCreateCategoryRequestDto requestBody
-  ){
-    ResponseEntity<ResponseDto> response  = createCategoryFacade.postCreateCategory(requestBody);
+  ) {
+    ResponseEntity<ResponseDto> response = categoryFacade.postCreateCategory(requestBody);
     return response;
   }
 
@@ -48,16 +47,17 @@ public class CategoryController {
   public ResponseEntity<ResponseDto> updateCategory(
       @RequestBody @Valid PatchEditCategoryRequestDto requestBody,
       @PathVariable("categoryNumber") Integer categoryNumber
-  ){
-    ResponseEntity<ResponseDto> response = patchCategoryFacade.patchCategory(requestBody, categoryNumber);
+  ) {
+    ResponseEntity<ResponseDto> response = categoryFacade.patchCategory(requestBody,
+        categoryNumber);
     return response;
   }
 
   @DeleteMapping("/{categoryNumber}")
   public ResponseEntity<ResponseDto> deleteCategory(
       @PathVariable("categoryNumber") Integer categoryNumber
-  ){
-    ResponseEntity<ResponseDto> response = deleteCategoryFacade.deleteCategory(categoryNumber);
+  ) {
+    ResponseEntity<ResponseDto> response = categoryFacade.deleteCategory(categoryNumber);
     return response;
   }
 

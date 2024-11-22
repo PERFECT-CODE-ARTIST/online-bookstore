@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatchUpdateBookRequestDto {
+
   @NotNull
   private String bookName;
   @NotNull
