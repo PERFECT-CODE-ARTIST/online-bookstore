@@ -103,6 +103,10 @@ public class OrdersFacade {
     Integer pricePerUnit = dto.getPricePerUnit();
 
     try {
+
+      boolean isMatched = readOrderService.existsByOrderNumberAndBookNumber(orderNumber,bookNumber);
+      if(isMatched) return ResponseDto.duplicatedNumber();
+
       OrdersEntity ordersEntity = readOrderService.findByOrderNumber(orderNumber);
       if (ordersEntity == null)
         return ResponseDto.noExistOrderCode();
