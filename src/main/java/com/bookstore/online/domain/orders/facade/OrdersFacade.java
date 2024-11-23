@@ -8,6 +8,7 @@ import com.bookstore.online.domain.orders.dto.request.BeforePaymentRequestDto;
 import com.bookstore.online.domain.orders.dto.request.BookInformationRequestDto;
 import com.bookstore.online.domain.orders.dto.result.GetOrderDetailsDTO;
 import com.bookstore.online.domain.orders.dto.response.GetOrderDetailsResponseDto;
+import com.bookstore.online.domain.orders.entity.OrderItemsEntity;
 import com.bookstore.online.domain.orders.entity.OrdersEntity;
 import com.bookstore.online.domain.orders.entity.repository.OrdersRepository;
 import com.bookstore.online.domain.orders.service.CreateOrderService;
@@ -127,6 +128,9 @@ public class OrdersFacade {
       Integer totalPrice = quantity * pricePerUnit;
       ordersEntity.setTotalPrice(totalPrice);
       updateOrderService.updateOrders(ordersEntity);
+
+      OrderItemsEntity orderItemsEntity = new OrderItemsEntity(dto);
+      createOrderService.bookInformation(orderItemsEntity);
 
     } catch (Exception e) {
       e.printStackTrace();
