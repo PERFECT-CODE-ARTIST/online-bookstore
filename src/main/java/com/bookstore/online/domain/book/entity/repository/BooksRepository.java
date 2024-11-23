@@ -37,21 +37,20 @@ public interface BooksRepository extends JpaRepository<BooksEntity, Integer> {
       , nativeQuery = true)
   List<BooksEntity> getBookDisCountList(@Param("paging") Integer paging);
 
-  //추루 orders | order_items 기능이 추가 된 이후 주석 해제하여 이용 예정
-//  @Query("SELECT new com.bookstore.online.domain.book.entity.resultSet.GetBookOrderCountResultSet(oi.bookNumber, COUNT(*)) " +
-//      "FROM orderItems oi " +
-//      "GROUP BY oi.bookNumber " +
-//      "ORDER BY COUNT(*) DESC " +
-//      "LIMIT 5")
-//  List<GetBookOrderCountResultSet> getBookOrderCountList();
-//
-//  @Query("SELECT new com.bookstore.online.domain.book.entity.resultSet.GetUserOrderPurchasedBookResultSet(b.categoryNumber, SUM(oi.quantity)) " +
-//          "FROM orderItems oi " +
-//          "JOIN books b ON oi.bookNumber  = b.bookNumber " +
-//          "JOIN orders o ON oi.orderNumber = o.orderNumber " +
-//          "WHERE o.userId =:userId " +
-//          "GROUP BY b.categoryNumber " +
-//          "ORDER BY SUM(oi.quantity) DESC " +
-//          "LIMIT 1" )
-//  GetUserOrderPurchasedBookResultSet PurchasedCategoryBookList(@Param("userId") String userId);
+  @Query("SELECT new com.bookstore.online.domain.book.entity.resultSet.GetBookOrderCountResultSet(oi.bookNumber, COUNT(*)) " +
+      "FROM OrderItems oi " +
+      "GROUP BY oi.bookNumber " +
+      "ORDER BY COUNT(*) DESC " +
+      "LIMIT 5")
+  List<GetBookOrderCountResultSet> getBookOrderCountList();
+
+  @Query("SELECT new com.bookstore.online.domain.book.entity.resultSet.GetUserOrderPurchasedBookResultSet(b.categoryNumber, SUM(oi.quantity)) " +
+          "FROM OrderItems oi " +
+          "JOIN books b ON oi.bookNumber  = b.bookNumber " +
+          "JOIN Orders o ON oi.orderNumber = o.orderNumber " +
+          "WHERE o.userId =:userId " +
+          "GROUP BY b.categoryNumber " +
+          "ORDER BY SUM(oi.quantity) DESC " +
+          "LIMIT 1" )
+  GetUserOrderPurchasedBookResultSet PurchasedCategoryBookList(@Param("userId") String userId);
 }

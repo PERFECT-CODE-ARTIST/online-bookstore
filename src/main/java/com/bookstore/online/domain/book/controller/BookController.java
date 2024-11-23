@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -96,18 +97,18 @@ public class BookController {
     return response;
   }
 
- // 추후 추가 기능
-//  @GetMapping("/best-seller")
-//  public ResponseEntity<? super GetBookListResponseDto> getBooksBestSellerList() {
-//    ResponseEntity<? super GetBookListResponseDto> response = bookFacade.getBestSellerBookList();
-//    return response;
-//  }
+  @GetMapping("/best-seller")
+  public ResponseEntity<? super GetBookListResponseDto> getBooksBestSellerList() {
+    ResponseEntity<? super GetBookListResponseDto> response = bookFacade.getBestSellerBookList();
+    return response;
+  }
 
 
-//  @GetMapping("/recommend/category-best-seller")
-//      @AuthenticationPrincipal String userId
-//  ) {
-//    ResponseEntity<? super GetBookListResponseDto> response = bookFacade.getCategoryBestSellerBookList(userId);
-//    return response;
-//  }
+  @GetMapping("/recommend/category-best-seller")
+  public ResponseEntity<? super GetBookListResponseDto> getBooksCategoryBestSellerList(
+      @AuthenticationPrincipal String userId
+  ) {
+    ResponseEntity<? super GetBookListResponseDto> response = bookFacade.getCategoryBestSellerBookList(userId);
+    return response;
+  }
 }
