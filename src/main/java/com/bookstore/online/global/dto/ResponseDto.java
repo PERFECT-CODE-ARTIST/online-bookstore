@@ -10,16 +10,16 @@ import org.springframework.http.ResponseEntity;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseDto {
+
   private String code;
   private String message;
 
-
-  public static ResponseEntity<ResponseDto> success(){
+  public static ResponseEntity<ResponseDto> success() {
     ResponseDto responseBody = new ResponseDto("SU", "success");
     return ResponseEntity.status(HttpStatus.OK).body(responseBody);
   }
 
-  public static ResponseEntity<ResponseDto> databaseError(){
+  public static ResponseEntity<ResponseDto> databaseError() {
     ResponseDto responseBody = new ResponseDto("DBA", "DATABASE_ERROR");
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
   }
@@ -100,5 +100,17 @@ public class ResponseDto {
     ResponseDto responseBody = new ResponseDto(ResponseCode.NO_PERMISSION,
         ResponseMessage.NO_PERMISSION);
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
+  }
+
+  public static ResponseEntity<ResponseDto> noExistOrderPrice() {
+    ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_ORDER_PRICE,
+        ResponseMessage.NO_EXIST_ORDER_PRICE);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+  }
+
+  public static ResponseEntity<ResponseDto> lackOfQuantity() {
+    ResponseDto responseBody = new ResponseDto(ResponseCode.LACK_OF_QUANTITY,
+        ResponseMessage.LACK_OF_QUANTITY);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
   }
 }
