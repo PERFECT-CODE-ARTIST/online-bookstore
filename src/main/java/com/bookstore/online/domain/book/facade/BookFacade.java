@@ -5,6 +5,8 @@ import com.bookstore.online.domain.book.dto.request.PostCreateBookRequestDto;
 import com.bookstore.online.domain.book.dto.response.GetBookDetailResponseDto;
 import com.bookstore.online.domain.book.dto.response.GetBookListResponseDto;
 import com.bookstore.online.domain.book.entity.BooksEntity;
+import com.bookstore.online.domain.book.entity.resultSet.GetBookOrderCountResultSet;
+import com.bookstore.online.domain.book.entity.resultSet.GetUserOrderPurchasedBookResultSet;
 import com.bookstore.online.domain.book.object.Book;
 import com.bookstore.online.domain.book.service.CreateBookService;
 import com.bookstore.online.domain.book.service.DeleteBookService;
@@ -12,6 +14,8 @@ import com.bookstore.online.domain.book.service.ReadBookService;
 import com.bookstore.online.domain.book.service.UpdateBookService;
 import com.bookstore.online.domain.category.entity.CategoryEntity;
 import com.bookstore.online.domain.category.service.ReadCategoryService;
+import com.bookstore.online.domain.user.entity.UserEntity;
+import com.bookstore.online.domain.user.service.ReadUserService;
 import com.bookstore.online.global.dto.ResponseDto;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +34,7 @@ public class BookFacade {
   private final ReadBookService readBookService;
   private final DeleteBookService deleteBookService;
   private final ReadCategoryService readCategoryService;
+  private final ReadUserService readUserService;
 
   public ResponseEntity<ResponseDto> postCreateBook(PostCreateBookRequestDto dto) {
     try {
@@ -174,62 +179,59 @@ public class BookFacade {
     return GetBookListResponseDto.success(bookList);
   }
 
-  // 추후 추가 기능
-//  public ResponseEntity<? super GetBookListResponseDto> getBestSellerBookList() {
-//    List<GetBookOrderCountResultSet> resultSetList = readBookService.bookOrderCount();
-//    System.out.println(resultSetList);
-//    List<Book> bookList = new ArrayList<>();
-//    try {
-//      for (GetBookOrderCountResultSet resultSet : resultSetList) {
-//
-//        Integer bookNumber = resultSet.bookNumber();
-//        BooksEntity booksEntity = readBookService.findBookNumber(bookNumber);
-//        Integer categoryNumber = booksEntity.getCategoryNumber();
-//        CategoryEntity categoryEntity = readCategoryService.findCategoryNumber(categoryNumber);
-//        Book book = new Book(booksEntity, categoryEntity);
-//        bookList.add(book);
-//      }
-//    } catch (Exception exception) {
-//      exception.printStackTrace();
-//      return ResponseDto.databaseError();
-//    }
-//    return GetBookListResponseDto.success(bookList);
-//  }
+  public ResponseEntity<? super GetBookListResponseDto> getBestSellerBookList() {
+    List<GetBookOrderCountResultSet> resultSetList = readBookService.bookOrderCount();
+    List<Book> bookList = new ArrayList<>();
+    try {
+      for (GetBookOrderCountResultSet resultSet : resultSetList) {
+
+        Integer bookNumber = resultSet.bookNumber();
+        BooksEntity booksEntity = readBookService.findBookNumber(bookNumber);
+        Integer categoryNumber = booksEntity.getCategoryNumber();
+        CategoryEntity categoryEntity = readCategoryService.findCategoryNumber(categoryNumber);
+        Book book = new Book(booksEntity, categoryEntity);
+        bookList.add(book);
+      }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return GetBookListResponseDto.success(bookList);
+  }
 
   // 추후 추가 기능
   public ResponseEntity<? super GetBookListResponseDto> getCategoryBestSellerBookList(
       String userId) {
-//    List<Book> bookList = new ArrayList<>();
-//    List<BooksEntity> booksEntityList =new ArrayList<>();
-//    try {
-// UserEntity userEntity = userService.findUserId(userId);
-//      if (userEntity == null) {
-//        throw new Error("존재하지 않는 유저 입니다.");
-//      }
-//      GetUserOrderPurchasedBookResultSet resultSet = readBookService.userPurchasedBookList(userId);
-//      if (resultSet == null) {
-//        throw new Error("구매한 목록이 없습니다.");
-//      }
-//      Integer categoryNumber = resultSet.categoryNumber();
-//      List<GetBookOrderCountResultSet> bestSellerBookNumber = readBookService.bookOrderCount();
-//      if (bestSellerBookNumber.isEmpty()) {
-//        throw new Error("베스트셀러 목록이 없습니다.");
-//      }
-//      for (GetBookOrderCountResultSet bestSellerBook : bestSellerBookNumber) {
-//        Integer bookNumber = bestSellerBook.bookNumber();
-//        BooksEntity booksEntity = readBookService.findBookNumber(bookNumber);
-//        if (booksEntity.getCategoryNumber().equals(categoryNumber)) {
-//          CategoryEntity categoryEntity = readCategoryService.findCategoryNumber(categoryNumber);
-//          Book book = new Book(booksEntity, categoryEntity);
-//          bookList.add(book);
-//        }
-//      }
-//
-//    } catch (Exception exception) {
-//      exception.printStackTrace();
-//      return ResponseDto.databaseError();
-//    }
-//    return GetBookListResponseDto.success(bookList);
-    return null;
+    List<Book> bookList = new ArrayList<>();
+    List<BooksEntity> booksEntityList =new ArrayList<>();
+    try {
+ UserEntity userEntity = readUserService .findUserByUserId(userId);
+      if (userEntity == null) {
+        throw new Error("존재하지 않는 유저 입니다.");
+      }
+      GetUserOrderPurchasedBookResultSet resultSet = readBookService.userPurchasedBookList(userId);
+      if (resultSet == null) {
+        throw new Error("구매한 목록이 없습니다.");
+      }
+      Integer categoryNumber = resultSet.categoryNumber();
+      List<GetBookOrderCountResultSet> bestSellerBookNumber = readBookService.bookOrderCount();
+      if (bestSellerBookNumber.isEmpty()) {
+        throw new Error("베스트셀러 목록이 없습니다.");
+      }
+      for (GetBookOrderCountResultSet bestSellerBook : bestSellerBookNumber) {
+        Integer bookNumber = bestSellerBook.bookNumber();
+        BooksEntity booksEntity = readBookService.findBookNumber(bookNumber);
+        if (booksEntity.getCategoryNumber().equals(categoryNumber)) {
+          CategoryEntity categoryEntity = readCategoryService.findCategoryNumber(categoryNumber);
+          Book book = new Book(booksEntity, categoryEntity);
+          bookList.add(book);
+        }
+      }
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return GetBookListResponseDto.success(bookList);
   }
 }

@@ -34,17 +34,16 @@ public class ReadBookService {
     return booksRepository.getBookDisCountList(paging);
   }
 
-  //추후 추가 기능
-//  public List<GetBookOrderCountResultSet> bookOrderCount() {
-//    return booksRepository.getBookOrderCountList();
-//  }
+  public List<GetBookOrderCountResultSet> bookOrderCount() {
+    return booksRepository.getBookOrderCountList();
+  }
 
   public List<BooksEntity> resentlyBookList() {
     return booksRepository.getRecentlyBookList();
   }
 
-//  public GetUserOrderPurchasedBookResultSet userPurchasedBookList(String userId){
-//    return booksRepository.PurchasedCategoryBookList(userId);
-//  }
+  public GetUserOrderPurchasedBookResultSet userPurchasedBookList(String userId){
+    return booksRepository.PurchasedCategoryBookList(userId);
+  }
 
 }
