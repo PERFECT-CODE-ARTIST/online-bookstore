@@ -25,12 +25,10 @@ public class ReviewEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Setter
   private Integer reviewNumber;
 
-  @Setter
   private Integer bookNumber;
-  @Setter
+
   private String userId;
   @Setter
   private String rating;
