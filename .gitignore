@@ -200,6 +200,10 @@ gradle-app.setting
 # 프로퍼티즈 제외
 application.properties
 
+# docker 제외
+docker-compose.yml
+my.cnf
+
 ### Gradle Patch ###
 # Java heap dump
 *.hprof

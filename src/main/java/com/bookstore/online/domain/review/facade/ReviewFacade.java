@@ -4,7 +4,10 @@ import com.bookstore.online.domain.review.dto.request.PatchReviewRequestDto;
 import com.bookstore.online.domain.review.dto.request.PostReviewRequestDto;
 import com.bookstore.online.domain.review.dto.response.GetReviewListResponseDto;
 import com.bookstore.online.domain.review.entity.ReviewEntity;
-import com.bookstore.online.domain.review.service.ReviewService;
+import com.bookstore.online.domain.review.service.DeleteReviewService;
+import com.bookstore.online.domain.review.service.GetReviewService;
+import com.bookstore.online.domain.review.service.PatchReviewService;
+import com.bookstore.online.domain.review.service.PostReviewService;
 import com.bookstore.online.global.dto.ResponseDto;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +19,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ReviewFacade {
 
-  private final ReviewService reviewService;
+  private final PostReviewService postReviewService;
+  private final GetReviewService getReviewService;
+  private final PatchReviewService patchReviewService;
+  private final DeleteReviewService deleteReviewService;
 
   // 리뷰 작성
   public ResponseEntity<ResponseDto> postReview(PostReviewRequestDto dto, String userId) {
@@ -24,7 +30,7 @@ public class ReviewFacade {
     try {
 
       ReviewEntity reviewEntity = new ReviewEntity(dto, userId);
-      reviewService.postReview(reviewEntity);
+      postReviewService.postReview(reviewEntity);
 
     } catch (Exception exception) {
         exception.printStackTrace();
@@ -43,7 +49,7 @@ public class ReviewFacade {
         throw new IllegalArgumentException("유효하지 않은 리뷰입니다.");
       }
 
-      reviewService.deleteReview(reviewNumber, userId);
+      deleteReviewService.deleteReview(reviewNumber, userId);
 
     } catch (Exception exception) {
       exception.printStackTrace();
@@ -63,7 +69,7 @@ public class ReviewFacade {
         throw new IllegalArgumentException("유효하지 않은 책번호입니다.");
       }
 
-      List<ReviewEntity> reviewEntities = reviewService.getReviewOfBookNumber(bookNumber);
+      List<ReviewEntity> reviewEntities = getReviewService.getReviewOfBookNumber(bookNumber);
       return GetReviewListResponseDto.success(reviewEntities);
 
     } catch (Exception exception) {
@@ -79,7 +85,7 @@ public class ReviewFacade {
 
     try {
 
-      reviewEntities = reviewService.getReviewOfUserId(userId);
+      reviewEntities = getReviewService.getReviewOfUserId(userId);
 
     } catch (Exception exception) {
       exception.printStackTrace();
@@ -98,7 +104,7 @@ public class ReviewFacade {
         throw new IllegalArgumentException("유효하지 않은 리뷰입니다.");
       }
 
-      reviewService.patchReview(dto, reviewNumber, userId);
+      patchReviewService.patchReview(dto, reviewNumber, userId);
 
     } catch (Exception exception) {
         exception.printStackTrace();
