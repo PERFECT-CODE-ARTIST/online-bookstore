@@ -36,6 +36,12 @@ public class ResponseDto {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
   }
 
+  public static ResponseEntity<ResponseDto> duplicatedNumber() {
+    ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATED_NUMBER,
+        ResponseMessage.DUPLICATED_NUMBER);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+  }
+
   public static ResponseEntity<ResponseDto> duplicatedUserEmail() {
     ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATED_USER_EMAIL,
         ResponseMessage.DUPLICATED_USER_EMAIL);
@@ -113,4 +119,5 @@ public class ResponseDto {
         ResponseMessage.LACK_OF_QUANTITY);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
   }
+
 }

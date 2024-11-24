@@ -7,6 +7,7 @@ public interface ResponseCode {
 
   String DUPLICATED_USER_ID = "DI";
   String DUPLICATED_USER_EMAIL = "DE";
+  String DUPLICATED_NUMBER = "DN";
 
   String NO_EXIST_USER_ID = "NI";
   String NO_EXIST_CATEGORY = "NC";

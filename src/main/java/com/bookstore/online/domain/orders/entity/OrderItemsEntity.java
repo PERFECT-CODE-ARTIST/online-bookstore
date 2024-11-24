@@ -1,5 +1,6 @@
 package com.bookstore.online.domain.orders.entity;
 
+import com.bookstore.online.domain.orders.dto.request.BookInformationRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,4 +26,11 @@ public class OrderItemsEntity {
   Integer bookNumber; // 책 고유번호
   Integer quantity; // 주문 수량
   Integer pricePerUnit; // 책의 가격
+
+  public OrderItemsEntity(BookInformationRequestDto dto) {
+    this.orderNumber = dto.getOrderNumber();
+    this.bookNumber = dto.getBookNumber();
+    this.quantity = dto.getQuantity();
+    this.pricePerUnit = dto.getPricePerUnit();
+  }
 }
