@@ -1,6 +1,8 @@
 package com.bookstore.online.domain.orders.dto.response;
 
-import com.bookstore.online.domain.orders.dto.result.GetOrderDetailsDTO;
+import com.bookstore.online.domain.orders.entity.OrdersEntity;
+import com.bookstore.online.domain.orders.entity.result.GetOrderDetailsResultSet;
+import com.bookstore.online.domain.user.entity.UserEntity;
 import com.bookstore.online.global.dto.ResponseCode;
 import com.bookstore.online.global.dto.ResponseDto;
 import com.bookstore.online.global.dto.ResponseMessage;
@@ -22,18 +24,18 @@ public class GetOrderDetailsResponseDto extends ResponseDto {
   Integer totalPrice; // 총가격
   String status; // 결제상태
 
-  public GetOrderDetailsResponseDto (GetOrderDetailsDTO dto) {
+  public GetOrderDetailsResponseDto (GetOrderDetailsResultSet resultSet) {
     super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-     this.orderNumber = dto.getOrderNumber();
-     this.userId = dto.getUserId();
-     this.name = dto.getName();
-     this.orderDate = dto.getOrderDate();
-     this.totalPrice = dto.getTotalPrice();
-     this.status = dto.getStatus();
+     this.orderNumber = resultSet.orderNumber();
+     this.userId = resultSet.userId();
+     this.name = resultSet.name();
+     this.orderDate = resultSet.orderDate();
+     this.totalPrice = resultSet.totalPrice();
+     this.status = resultSet.status();
   }
 
-  public static ResponseEntity<GetOrderDetailsResponseDto> success(GetOrderDetailsDTO dto) {
-    GetOrderDetailsResponseDto responseBody = new GetOrderDetailsResponseDto(dto);
+  public static ResponseEntity<GetOrderDetailsResponseDto> success(GetOrderDetailsResultSet resultSet) {
+    GetOrderDetailsResponseDto responseBody = new GetOrderDetailsResponseDto(resultSet);
     return ResponseEntity.status(HttpStatus.OK).body(responseBody);
   }
 
