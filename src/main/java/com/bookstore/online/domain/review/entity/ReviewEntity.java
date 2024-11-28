@@ -10,12 +10,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "reviews")
@@ -27,8 +28,11 @@ public class ReviewEntity {
   private Integer reviewNumber;
 
   private Integer bookNumber;
+
   private String userId;
+  @Setter
   private String rating;
+  @Setter
   private String comment;
 
   // 리뷰 작성 시 데이터를 삽입하기 위한 생성자
