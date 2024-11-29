@@ -1,10 +1,10 @@
 version: '3.8'
 
-services:
-  mysql:
-    image: mysql:8.0
-    container_name: online_bookstore
-    environment:
+services: # 하나의 컨테이너, 여러개가 생길 수 있다.
+  mysql: # 변수명
+    image: mysql:8.0 # 이미지
+    container_name: online_bookstore # 컨테이너 이름
+    environment: # 환경변수
       MYSQL_ROOT_PASSWORD: 1q2w3e4r
       MYSQL_DATABASE: bookStore
       MYSQL_USER: admin
@@ -13,7 +13,7 @@ services:
       - mysql_data:/var/lib/mysql  # MySQL 데이터 저장 볼륨
       - ./my.cnf:/etc/mysql/conf.d/my.cnf  # MySQL UTF-8 설정 파일
     ports:
-      - "3307:3306"
+      - "3307:3306" #local port / 앞 3306은 바꿀 수 있다.
     networks:
       - online_network
 

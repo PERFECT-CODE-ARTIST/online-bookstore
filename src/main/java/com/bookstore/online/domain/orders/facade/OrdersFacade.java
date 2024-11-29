@@ -6,12 +6,12 @@ import com.bookstore.online.domain.book.service.UpdateBookService;
 import com.bookstore.online.domain.orders.dto.request.AfterPaymentRequestDto;
 import com.bookstore.online.domain.orders.dto.request.BeforePaymentRequestDto;
 import com.bookstore.online.domain.orders.dto.request.BookInformationRequestDto;
-import com.bookstore.online.domain.orders.dto.result.GetOrderDetailsDTO;
+import com.bookstore.online.domain.orders.entity.result.GetOrderDetailsResultSet;
 import com.bookstore.online.domain.orders.dto.response.GetOrderDetailsResponseDto;
 import com.bookstore.online.domain.orders.entity.OrderItemsEntity;
 import com.bookstore.online.domain.orders.entity.OrdersEntity;
-import com.bookstore.online.domain.orders.entity.repository.OrdersRepository;
 import com.bookstore.online.domain.orders.service.CreateOrderService;
+import com.bookstore.online.domain.orders.service.DeleteOrderService;
 import com.bookstore.online.domain.orders.service.ReadOrderService;
 import com.bookstore.online.domain.orders.service.UpdateOrderService;
 import com.bookstore.online.global.dto.ResponseDto;
@@ -23,17 +23,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional
 @RequiredArgsConstructor
 public class OrdersFacade {
-
-  private final OrdersRepository ordersRepository;
 
   private final CreateOrderService createOrderService;
   private final ReadOrderService readOrderService;
   private final UpdateOrderService updateOrderService;
+  private final DeleteOrderService deleteOrderService;
 
   private final ReadBookService readBookService;
   private final UpdateBookService updateBookService;
+
 
   public ResponseEntity<ResponseDto> beforePayment(BeforePaymentRequestDto dto) {
     try {
@@ -50,11 +51,12 @@ public class OrdersFacade {
 
   public ResponseEntity<? super GetOrderDetailsResponseDto> orderDetails(Integer orderNumber) {
 
-    GetOrderDetailsDTO isOrderNumber;
+    GetOrderDetailsResultSet resultSet;
 
     try {
-      isOrderNumber = readOrderService.orderDetails(orderNumber);
-      if (isOrderNumber == null) {
+      resultSet = readOrderService.orderDetails(orderNumber);
+
+      if(resultSet == null) {
         return ResponseDto.noExistOrderCode();
       }
 
@@ -63,7 +65,7 @@ public class OrdersFacade {
       return ResponseDto.databaseError();
     }
 
-    return GetOrderDetailsResponseDto.success(isOrderNumber);
+    return GetOrderDetailsResponseDto.success(resultSet);
   }
 
   public ResponseEntity<ResponseDto> afterPayment(Integer orderNumber, AfterPaymentRequestDto dto) {
@@ -75,7 +77,6 @@ public class OrdersFacade {
       Integer totalPrice = ordersEntity.getTotalPrice();
       Integer isTotalPrice = dto.getTotalPrice();
 
-      System.out.println(totalPrice + "@@@@@@@@@@@@@@@@@@@@" + isTotalPrice);
       if (!totalPrice.equals(isTotalPrice))
         return ResponseDto.noExistOrderPrice();
 
@@ -94,7 +95,6 @@ public class OrdersFacade {
     return ResponseDto.success();
   }
 
-  @Transactional
   public ResponseEntity<ResponseDto> bookInformation(BookInformationRequestDto dto) {
 
     Integer orderNumber = dto.getOrderNumber();
@@ -143,38 +143,50 @@ public class OrdersFacade {
     return ResponseDto.success();
   }
 
-  // 매일 자정마다 실행되어 주문 상태를 자동으로 변경
-  @Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
+  // @Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
+  @Scheduled(cron = "*/10 * * * * ?") // 10초마다 실행 (test 하기위해)
   public void updateOrderStatuses() {
-    List<OrdersEntity> orders = ordersRepository.findAll();
-    for (OrdersEntity order : orders) {
-      int daysSinceOrder = getDaysSinceOrder(order.getOrderDate());
-      if (daysSinceOrder == 1) {
-        // 1일차: 배송 중으로 상태 업데이트
-        updateOrderService.updateOrderStatus(order.getOrderNumber(), "배송 중");
-      } else if (daysSinceOrder == 2) {
-        // 2일차: 발송 완료로 상태 업데이트
-        updateOrderService.updateOrderStatus(order.getOrderNumber(), "발송 완료");
+    try {
+      List<OrdersEntity> orders = readOrderService.findAll();
+
+      for (OrdersEntity ordersEntity : orders) {
+        Integer orderNumber = ordersEntity.getOrderNumber();
+        String currentStatus = ordersEntity.getStatus();
+
+
+        if ("결제완료".equals(currentStatus)) {
+          updateOrderService.updateOrderStatus(orderNumber, "배송중");
+          System.out.println("결제완료 상태를 배송중으로 변경하였습니다: " + orderNumber);
+        } else if ("배송중".equals(currentStatus)) {
+          updateOrderService.updateOrderStatus(orderNumber, "배송완료");
+          System.out.println("배송중 상태를 배송완료로 변경하였습니다: " + orderNumber);
+        }
       }
+
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
-  // 주문 상태 수동 변경
-  public void updateOrderStatusManually(int orderNumber, String status) {
-    updateOrderService.updateOrderStatus(orderNumber, status);
-  }
+  public ResponseEntity<ResponseDto> deleteOrders(Integer orderNumber) {
 
-  // 주문 상태 조회
-  public String getOrderStatus(int orderNumber) {
-    OrdersEntity ordersEntity = ordersRepository.findById(orderNumber)
-        .orElseThrow(() -> new RuntimeException("Order not found"));
-    return ordersEntity.getStatus();
-  }
+    try {
+      OrdersEntity ordersEntity = readOrderService.findByOrderNumber(orderNumber);
+      if(ordersEntity == null) {
+        return ResponseDto.noExistOrderCode();
+      }
+      String status = ordersEntity.getStatus();
+      if ("결제대기".equals(status)){
+        deleteOrderService.deleteOrders(ordersEntity);
+      }else {
+        return ResponseDto.noExistOrderCode();
+      }
 
-  private int getDaysSinceOrder(String orderDate) {
-    // orderDate를 날짜로 변환 후 현재 날짜와 비교하여 몇 일이 지났는지 계산
-    // 여기서는 임시로 1일차로 반환하는 코드로 대체
-    return 1; // 임시로 1일차
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return ResponseDto.success();
   }
 
 }
