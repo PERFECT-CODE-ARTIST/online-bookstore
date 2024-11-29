@@ -7,6 +7,7 @@ public interface ResponseMessage {
 
   String DUPLICATED_USER_ID = "Duplicated user id.";
   String DUPLICATED_USER_EMAIL = "Duplicated user email.";
+  String DUPLICATED_NUMBER = "Duplicated number";
 
   String NO_EXIST_USER_ID = "No exist user id.";
   String NO_EXIST_CATEGORY = "No exist category by book.";
