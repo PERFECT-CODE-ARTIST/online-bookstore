@@ -16,10 +16,8 @@ public class UpdateOrderService {
     ordersRepository.save(ordersEntity);
   }
 
-  // 주문 상태 변경
-  public void updateOrderStatus(int orderNumber, String status) {
-    OrdersEntity ordersEntity = ordersRepository.findById(orderNumber)
-        .orElseThrow(() -> new RuntimeException("Order not found"));
+  public void updateOrderStatus(Integer orderNumber, String status) {
+    OrdersEntity ordersEntity = ordersRepository.findByOrderNumber(orderNumber);
     ordersEntity.setStatus(status);
     ordersRepository.save(ordersEntity);
   }

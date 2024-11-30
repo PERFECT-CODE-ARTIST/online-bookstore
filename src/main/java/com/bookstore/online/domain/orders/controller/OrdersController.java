@@ -9,6 +9,7 @@ import com.bookstore.online.global.dto.ResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,7 @@ public class OrdersController {
     return response;
   }
 
-  // 주문에 포함된 책 정보
+  // 주문에 포함된 책상세 정보
   @PostMapping("/bookInformation")
   public ResponseEntity<ResponseDto> bookInformation(
     @RequestBody @Valid BookInformationRequestDto requestBody
@@ -52,7 +53,7 @@ public class OrdersController {
     return response;
   }
 
-  // 주문내역보기
+  // 주문내역보기[배송현황도 같이 볼 수 있음]
   @GetMapping("/orderDetails/{orderNumber}")
   public ResponseEntity<? super GetOrderDetailsResponseDto> orderDetails(
       @PathVariable("orderNumber") Integer orderNumber
@@ -61,17 +62,12 @@ public class OrdersController {
     return  response;
   }
 
-  // 특정 주문 상태 조회
-  @GetMapping("/{orderNumber}")
-  public String getOrderStatus(@PathVariable int orderNumber) {
-    return ordersFacade.getOrderStatus(orderNumber);
+  // 주문 내역 삭제하기(결제대기일 경우만 가능)
+  @DeleteMapping("/{orderNumber}")
+  public ResponseEntity<ResponseDto> deleteOrders(
+    @PathVariable("orderNumber") Integer orderNumber
+  ){
+    ResponseEntity<ResponseDto> response = ordersFacade.deleteOrders(orderNumber);
+    return response;
   }
-
-  // 주문 상태 수동 변경
-  @PatchMapping("/update/{orderNumber}/{status}")
-  public String updateOrderStatus(@PathVariable int orderNumber, @PathVariable String status) {
-    ordersFacade.updateOrderStatusManually(orderNumber, status);
-    return "Order status updated successfully!";
-  }
-
 }
