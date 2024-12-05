@@ -37,6 +37,7 @@ public class ReviewEntity {
   @Setter
   private String comment;
 
+  @Setter
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime createdAt;
 

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -21,6 +22,7 @@ public class PostReviewService {
 
   // List 타입 사용할 것임. (최신 리뷰를 중점으로 불러올 예정)
   // 리뷰 작성
+  @Transactional
   public void postReview(ReviewEntity reviewEntity) {
     boolean isExistReview = reviewRepository.existsByBookNumberAndUserId(
         reviewEntity.getBookNumber(), reviewEntity.getUserId());
@@ -34,11 +36,13 @@ public class PostReviewService {
 
       // 변환 후 Redis에 저장
       redisTemplate.opsForList().leftPush(REVIEW_KEY, reviewJson);
+      
     } catch (Exception exception) {
       log.error("Error serializing reviewEntity: {}", exception.getMessage());
       throw new RuntimeException("리뷰 저장 중 오류 발생", exception);
     }
 
+    // DB에 저장
     reviewRepository.save(reviewEntity);
   }
 

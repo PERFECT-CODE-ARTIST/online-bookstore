@@ -3,9 +3,13 @@ package com.bookstore.online.domain.review.controller;
 import com.bookstore.online.domain.review.dto.request.PatchReviewRequestDto;
 import com.bookstore.online.domain.review.dto.request.PostReviewRequestDto;
 import com.bookstore.online.domain.review.dto.response.GetReviewListResponseDto;
+import com.bookstore.online.domain.review.entity.ReviewEntity;
 import com.bookstore.online.domain.review.facade.ReviewFacade;
+import com.bookstore.online.domain.review.service.CacheService;
+import com.bookstore.online.domain.review.service.PostReviewService;
 import com.bookstore.online.global.dto.ResponseDto;
 import jakarta.validation.Valid;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,16 +28,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReviewController {
 
   private final ReviewFacade reviewFacade;
+  private final CacheService cacheService;
+  private final PostReviewService postReviewService;
 
   // 리뷰 작성
   @PostMapping("/review-write")
   public ResponseEntity<ResponseDto> postReview(
-
-      @RequestBody @Valid PostReviewRequestDto requestBody,
-      @AuthenticationPrincipal  String userId
+      @RequestBody @Valid ReviewEntity reviewEntity
   ) {
-    ResponseEntity<ResponseDto> response = reviewFacade.postReview(requestBody, userId);
-    return response;
+    reviewEntity.setCreatedAt(LocalDateTime.now());
+    postReviewService.postReview(reviewEntity);
+    return ResponseDto.success();
   }
 
   // 리뷰 삭제
