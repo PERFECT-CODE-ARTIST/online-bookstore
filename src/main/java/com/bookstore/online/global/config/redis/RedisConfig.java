@@ -1,4 +1,4 @@
-package com.bookstore.online.global.config.security;
+package com.bookstore.online.global.config.redis;
 
 // Redis 설정
 

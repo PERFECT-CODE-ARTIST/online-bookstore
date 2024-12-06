@@ -8,7 +8,6 @@ import com.bookstore.online.domain.review.service.ReviewService;
 import com.bookstore.online.global.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,6 @@ public class ReviewController {
       @RequestBody @Valid PostReviewRequestDto requestBody,
       @AuthenticationPrincipal String userId
   ) {
-      requestBody.setCreatedAt(LocalDateTime.now());
       reviewService.postReview(requestBody, userId);
       return  ResponseDto.success();
   }

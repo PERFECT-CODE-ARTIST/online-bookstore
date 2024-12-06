@@ -44,7 +44,6 @@ public class ReviewService {
     reviewEntity.setBookNumber(dto.getBookNumber());
     reviewEntity.setRating(dto.getRating());
     reviewEntity.setComment(dto.getComment());
-    reviewEntity.setCreatedAt(dto.getCreatedAt());
 
     try {
 

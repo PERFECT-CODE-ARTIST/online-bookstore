@@ -2,6 +2,7 @@ package com.bookstore.online.domain.review.dto.request;
 
 // 리뷰 작성 요청을 위한 dto
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -27,7 +28,8 @@ public class PostReviewRequestDto {
   @NotBlank
   private String comment;
 
-  @NotNull
-  private LocalDateTime createdAt;
+//  @NotNull
+//  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//  private LocalDateTime createdAt;
 
 }
