@@ -24,7 +24,4 @@ public class PatchReviewRequestDto {
   @NotBlank
   private String comment;
 
-  @NotNull
-  private LocalDateTime createdAt;
-
 }

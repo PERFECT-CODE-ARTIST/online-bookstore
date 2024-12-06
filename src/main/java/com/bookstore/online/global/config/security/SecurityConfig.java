@@ -24,6 +24,11 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(request -> request
             .requestMatchers(
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/swagger-ui.html"
+            ).permitAll()
+            .requestMatchers(
                 AntPathRequestMatcher.antMatcher("/api/v1/user/**")
             ).permitAll()
             .requestMatchers(HttpMethod.GET,

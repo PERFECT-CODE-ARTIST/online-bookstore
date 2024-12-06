@@ -29,8 +29,10 @@ public class ReviewEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer reviewNumber;
 
+  @Setter
   private Integer bookNumber;
 
+  @Setter
   private String userId;
   @Setter
   private String rating;
@@ -55,7 +57,7 @@ public class ReviewEntity {
   public void patch(PatchReviewRequestDto dto) {
     this.rating = dto.getRating();
     this.comment = dto.getComment();
-    this.createdAt = dto.getCreatedAt();
+    this.createdAt = LocalDateTime.now();
   }
 
 }
