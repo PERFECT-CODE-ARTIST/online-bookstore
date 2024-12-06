@@ -1,0 +1,28 @@
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/book_store?serverTimezone=UTC&charaterEncoding=UTF-8
+        username: root
+        password: L0pht@27
+
+    application:
+        name: online
+
+jwt:
+    secret: 01631c5d15fe4e09bea76a7a7f4fa35b47ce236a033efc5c3aa8d2ab2a7618151641d4bd1dd47029ee95097db07c1d387db3a62bc40690352c10a8d30a82af45f21e18b5f752ccf79e5f09ce74e3f1d66ab7e100f5051c4140bd43f15f583c5bfe43ce78e440388ed61c3af16a1e56c24b9f6a7ee824ee0d859fa364e6c9cf71485dd96aa6213a6693481cc411d2d1891d6ef1f79c9c411daa24c879e84fd262b1d3bc5e0b87549d50f590d343298dd94c2c5a15b33ec3cf96689280a89f77a589dec3a421045d1c77f4f3a6d4ee54572e995b4162ee10d5cd5362590da9b2ba3f3bbe1ce261fdf55a720fb03a46206822dbc17c82027ff916efabb792236888
+
+springdoc:
+    version: '@project.version@'
+    api-docs:
+        path: /api-docs
+    default-consumes-media-type: application/json
+    default-produces-media-type: application/json
+    swagger-ui:
+        operations-sorter: alpha
+        tags-sorter: alpha
+        path: /swagger-ui.html
+        disable-swagger-default-url: true
+        display-query-params-without-oauth2: true
+        doc-expansion: none
+    paths-to-match:
+        - /api/**
