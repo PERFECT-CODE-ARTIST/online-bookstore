@@ -1,21 +1,31 @@
-version: '3.8'
+#version: '3.8'
 
-services: # 하나의 컨테이너, 여러개가 생길 수 있다.
-  mysql: # 변수명
-    image: mysql:8.0 # 이미지
-    container_name: online_bookstore # 컨테이너 이름
-    environment: # 환경변수
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: online_bookstore
+    environment:
       MYSQL_ROOT_PASSWORD: 1q2w3e4r
       MYSQL_DATABASE: bookStore
-      MYSQL_USER: admin
+      MYSQL_USER: dev
       MYSQL_PASSWORD: 1q2w3e4r
     volumes:
-      - mysql_data:/var/lib/mysql  # MySQL 데이터 저장 볼륨
+      - mysql_data:/var/lib/mysql  # MySQL 데이터 저장 볼륨 Default 값이라고 생각
       - ./my.cnf:/etc/mysql/conf.d/my.cnf  # MySQL UTF-8 설정 파일
     ports:
-      - "3307:3306" #local port / 앞 3306은 바꿀 수 있다.
+      -  "3306:3306"
     networks:
       - online_network
+
+  radis:
+    image: redis:latest
+    container_name: redis-pratice
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-config:/usr/local/etc/redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+
 volumes:
   mysql_data:
 
