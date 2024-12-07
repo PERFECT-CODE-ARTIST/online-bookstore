@@ -200,6 +200,9 @@ gradle-app.setting
 # 프로퍼티즈 제외
 application.properties
 
+# yml
+application.yml
+
 # docker 제외
 docker-compose.yml
 my.cnf
