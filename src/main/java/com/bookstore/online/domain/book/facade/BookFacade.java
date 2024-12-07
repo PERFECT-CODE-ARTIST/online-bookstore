@@ -203,9 +203,9 @@ public class BookFacade {
   public ResponseEntity<? super GetBookListResponseDto> getCategoryBestSellerBookList(
       String userId) {
     List<Book> bookList = new ArrayList<>();
-    List<BooksEntity> booksEntityList =new ArrayList<>();
+    List<BooksEntity> booksEntityList = new ArrayList<>();
     try {
- UserEntity userEntity = readUserService .findUserByUserId(userId);
+      UserEntity userEntity = (UserEntity) readUserService.readCacheUser(userId, UserEntity.class);
       if (userEntity == null) {
         throw new Error("존재하지 않는 유저 입니다.");
       }

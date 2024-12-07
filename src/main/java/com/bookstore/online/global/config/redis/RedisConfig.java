@@ -1,7 +1,5 @@
 package com.bookstore.online.global.config.redis;
 
-// Redis 설정
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -47,6 +45,7 @@ public class RedisConfig {
     template.setValueSerializer(serializer);
     template.setHashKeySerializer(new StringRedisSerializer());
     template.setHashValueSerializer(serializer);
+    
     return template;
   }
 
