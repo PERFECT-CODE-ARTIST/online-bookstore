@@ -16,6 +16,7 @@ services: # 하나의 컨테이너, 여러개가 생길 수 있다.
       - "3307:3306" #local port / 앞 3306은 바꿀 수 있다.
     networks:
       - online_network
+<<<<<<< HEAD
   redis:
     image: redis:latest
     container_name: redis-practice
@@ -25,6 +26,8 @@ services: # 하나의 컨테이너, 여러개가 생길 수 있다.
       - ./redis-config:/usr/local/etc/redis
     command: redis-server /usr/local/etc/redis/redis.conf
 
+=======
+>>>>>>> 4227f82a8303651e4e64d76a53faec9fed175b05
 volumes:
   mysql_data:
 
