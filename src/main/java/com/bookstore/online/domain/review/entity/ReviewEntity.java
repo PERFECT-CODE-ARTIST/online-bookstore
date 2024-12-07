@@ -25,23 +25,19 @@ import lombok.Setter;
 @Table(name = "reviews")
 public class ReviewEntity {
 
+  @Setter
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer reviewNumber;
 
   @Setter
   private Integer bookNumber;
-
   @Setter
   private String userId;
   @Setter
   private String rating;
   @Setter
   private String comment;
-
-//  @Setter
-//  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//  private LocalDateTime createdAt;
 
   // 리뷰 작성 시 데이터를 삽입하기 위한 생성자
   public ReviewEntity(PostReviewRequestDto dto, String userId) {
