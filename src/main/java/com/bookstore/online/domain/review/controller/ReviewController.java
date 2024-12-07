@@ -4,7 +4,10 @@ import com.bookstore.online.domain.review.dto.request.PatchReviewRequestDto;
 import com.bookstore.online.domain.review.dto.request.PostReviewRequestDto;
 import com.bookstore.online.domain.review.dto.response.GetReviewListResponseDto;
 import com.bookstore.online.domain.review.entity.ReviewEntity;
-import com.bookstore.online.domain.review.service.ReviewService;
+import com.bookstore.online.domain.review.service.DeleteReviewService;
+import com.bookstore.online.domain.review.service.GetReviewService;
+import com.bookstore.online.domain.review.service.PatchReviewService;
+import com.bookstore.online.domain.review.service.PostReviewService;
 import com.bookstore.online.global.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -26,7 +29,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ReviewController {
 
-  private final ReviewService reviewService;
+  private final PostReviewService postReviewService;
+  private final PatchReviewService patchReviewService;
+  private final GetReviewService getReviewService;
+  private final DeleteReviewService deleteReviewService;
 
   // 리뷰 작성
   @Operation(summary = "리뷰 작성", description = "책에 대해 1번만 리뷰를 작성합니다.")
@@ -35,7 +41,7 @@ public class ReviewController {
       @RequestBody @Valid PostReviewRequestDto requestBody,
       @AuthenticationPrincipal String userId
   ) {
-      reviewService.postReview(requestBody, userId);
+      postReviewService.postReview(requestBody, userId);
       return  ResponseDto.success();
   }
 
@@ -46,7 +52,7 @@ public class ReviewController {
       @PathVariable("bookNumber") Integer bookNumber
   ) {
     // 리뷰 리스트 조회
-    List<ReviewEntity> reviewEntities = reviewService.getReviewsOfBookNumber(bookNumber);
+    List<ReviewEntity> reviewEntities = getReviewService.getReviewsOfBookNumber(bookNumber);
 
     // dto 변환 및 응답 반환
     return GetReviewListResponseDto.success(reviewEntities);
@@ -58,7 +64,7 @@ public class ReviewController {
   public ResponseEntity<? super GetReviewListResponseDto> getReviewListOfUserId(
       @AuthenticationPrincipal String userId
   ) {
-    List<ReviewEntity> reviewEntities = reviewService.getReviewsOfUserId(userId);
+    List<ReviewEntity> reviewEntities = getReviewService.getReviewsOfUserId(userId);
 
     return GetReviewListResponseDto.success(reviewEntities);
   }
@@ -71,7 +77,7 @@ public class ReviewController {
       @PathVariable("reviewNumber") Integer reviewNumber,
       @AuthenticationPrincipal String userId
   ) {
-    ResponseEntity<ResponseDto> response = reviewService.patchReview(requestBody, reviewNumber, userId);
+    ResponseEntity<ResponseDto> response = patchReviewService.patchReview(requestBody, reviewNumber, userId);
     return response;
   }
 
@@ -82,7 +88,7 @@ public class ReviewController {
       @PathVariable("reviewNumber") Integer reviewNumber,
       @AuthenticationPrincipal String userId
   ) {
-    ResponseEntity<ResponseDto> response = reviewService.deleteReview(reviewNumber, userId);
+    ResponseEntity<ResponseDto> response = deleteReviewService.deleteReview(reviewNumber, userId);
     return response;
   }
 
