@@ -23,7 +23,7 @@ public class JwtProvider {
 
   public String generateAccessToken(String userId) {
     // 현재로부터 하루
-    Date expireDate = new Date(System.currentTimeMillis() + (1000L + 60 * 60 * 24));
+    Date expireDate = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24));
     return Jwts.builder()
         .claim("userId", userId)
         .expiration(expireDate)

@@ -1,7 +1,10 @@
 package com.bookstore.online.global.filter;
 
+import com.bookstore.online.domain.user.entity.UserEntity;
+import com.bookstore.online.domain.user.service.ReadUserService;
 import com.bookstore.online.global.jwt.JwtProvider;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +25,7 @@ import java.io.IOException;
 public class JwtAccessTokenFilter extends OncePerRequestFilter {
 
   private final JwtProvider jwtProvider;
+  private final ReadUserService readUserService;
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -40,6 +44,12 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
     try {
       claims = jwtProvider.getClaims(accessToken);
       String userId = (String) claims.get("userId");
+
+      UserEntity user = (UserEntity) readUserService.readCacheUser(userId, UserEntity.class);
+
+      if (user == null) {
+        throw new JwtException("can't find user");
+      }
 
       Authentication authentication =
           new UsernamePasswordAuthenticationToken(userId, null, AuthorityUtils.NO_AUTHORITIES);
