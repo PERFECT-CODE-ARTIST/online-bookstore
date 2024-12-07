@@ -19,14 +19,16 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
 
   @Bean
-  public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+  public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
     RedisTemplate<String, Object> template = new RedisTemplate<>();
-    template.setConnectionFactory(redisConnectionFactory);
+    template.setConnectionFactory(connectionFactory);
 
+    // Key Serializer 설정
     template.setKeySerializer(new StringRedisSerializer());
 
+    // Value Serializer 설정
     ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
+    mapper.registerModules(new JavaTimeModule());
     mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
 
@@ -43,7 +45,7 @@ public class RedisConfig {
     template.setValueSerializer(serializer);
     template.setHashKeySerializer(new StringRedisSerializer());
     template.setHashValueSerializer(serializer);
-
+    
     return template;
   }
 
