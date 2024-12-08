@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReviewRepository extends JpaRepository<ReviewEntity, Integer> {
 
-  // 사용자가 이미 작성한 리뷰가 있는지 확인용(사용자, 책번호)
+  // 유저가 이미 작성한 리뷰인지 확인 (사용자, 책 번호)
   boolean existsByBookNumberAndUserId(Integer bookNumber, String userId);
 
   // 리뷰 번호 찾기

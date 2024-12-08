@@ -9,9 +9,11 @@ import com.bookstore.online.domain.review.service.GetReviewService;
 import com.bookstore.online.domain.review.service.PatchReviewService;
 import com.bookstore.online.domain.review.service.PostReviewService;
 import com.bookstore.online.global.dto.ResponseDto;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -23,15 +25,33 @@ public class ReviewFacade {
   private final GetReviewService getReviewService;
   private final PatchReviewService patchReviewService;
   private final DeleteReviewService deleteReviewService;
+  
+  private final RedisTemplate<String, String> redisTemplate;
+  private static final Integer LOCK_EXPIRE_SECONDS = 10; // 10초
 
   // 리뷰 작성
   public ResponseEntity<ResponseDto> postReview(PostReviewRequestDto dto, String userId) {
+    String lockKey = "review:lock" + userId + ":" + dto.getBookNumber(); // review:lock:qwer1234:1234
+
+    // redis 락 확인
+    Boolean isLocked = redisTemplate.opsForValue().setIfAbsent(lockKey, "locked", Duration.ofSeconds(LOCK_EXPIRE_SECONDS));
+    if (Boolean.FALSE.equals(isLocked)) throw new IllegalArgumentException("이미 리뷰를 작성 중이거나 존재합니다.");
+
     try {
+      // 작성된 리뷰인지 검증
+      boolean isExistsReview = postReviewService.isExistsReview(dto.getBookNumber(), userId);
+      if (isExistsReview) throw new IllegalArgumentException("이미 작성된 리뷰입니다.");
+
+      // 리뷰 저장
       ReviewEntity reviewEntity = new ReviewEntity(dto, userId);
       postReviewService.postReview(reviewEntity);
+
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
+    } finally {
+      // 락 해제
+      redisTemplate.delete(lockKey);
     }
 
     return ResponseDto.success();
