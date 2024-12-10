@@ -20,6 +20,7 @@ import com.bookstore.online.global.dto.ResponseDto;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -99,6 +100,7 @@ public class BookFacade {
     return GetBookListResponseDto.success(bookList);
   }
 
+  @Cacheable(cacheNames = "book", key = "#bookNumber")
   public ResponseEntity<? super GetBookDetailResponseDto> bookDetail(Integer bookNumber) {
     BooksEntity booksEntity = null;
     CategoryEntity categoryEntity = null;
