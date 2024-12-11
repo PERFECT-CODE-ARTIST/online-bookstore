@@ -42,6 +42,10 @@ public class ReviewFacade {
       boolean isExistsReview = postReviewService.isExistsReview(dto.getBookNumber(), userId);
       if (isExistsReview) throw new IllegalArgumentException("이미 작성된 리뷰입니다.");
 
+      // 구매한 책인지 검증
+      boolean isExistsPurchase = postReviewService.isExistsPurchase(userId, dto.getOrderNumber());
+      if (!isExistsPurchase) throw new IllegalArgumentException("구매한 책에 대해서만 리뷰가 가능합니다.");
+
       // 리뷰 저장
       ReviewEntity reviewEntity = new ReviewEntity(dto, userId);
       postReviewService.postReview(reviewEntity);

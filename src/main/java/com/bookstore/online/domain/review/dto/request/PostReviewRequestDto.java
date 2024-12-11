@@ -20,6 +20,9 @@ public class PostReviewRequestDto {
   @NotNull
   private Integer bookNumber;
 
+  @NotNull
+  private Integer orderNumber;
+
   @NotBlank(message = "최소 1점을 선택해야 합니다.")
   @Min(1)
   @Max(5)

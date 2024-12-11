@@ -28,4 +28,7 @@ public interface OrdersRepository extends JpaRepository<OrdersEntity, Integer> {
   )
   GetOrderDetailsResultSet orderDetails(@Param("orderNumber") Integer orderNumber);
 
+  // 유저가 구매한 책인지 확인 (유저 아이디 + 주문고유번호)
+  boolean existsByUserIdAndOrderNumber(String userId, Integer orderNumber);
+
 }
