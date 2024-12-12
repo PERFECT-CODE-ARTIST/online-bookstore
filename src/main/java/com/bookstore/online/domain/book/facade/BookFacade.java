@@ -15,7 +15,7 @@ import com.bookstore.online.domain.book.service.UpdateBookService;
 import com.bookstore.online.domain.category.entity.CategoryEntity;
 import com.bookstore.online.domain.category.service.ReadCategoryService;
 import com.bookstore.online.domain.user.entity.UserEntity;
-import com.bookstore.online.domain.user.service.ReadUserService;
+import com.bookstore.online.domain.user.service.user.ReadUserService;
 import com.bookstore.online.global.dto.ResponseDto;
 import java.util.ArrayList;
 import java.util.List;
@@ -205,7 +205,7 @@ public class BookFacade {
     List<Book> bookList = new ArrayList<>();
     List<BooksEntity> booksEntityList = new ArrayList<>();
     try {
-      UserEntity userEntity = (UserEntity) readUserService.readCacheUser(userId, UserEntity.class);
+      UserEntity userEntity = readUserService.findUserByUserId(userId);
       if (userEntity == null) {
         throw new Error("존재하지 않는 유저 입니다.");
       }

@@ -1,4 +1,4 @@
-package com.bookstore.online.domain.user.service;
+package com.bookstore.online.domain.user.service.user;
 
 import com.bookstore.online.domain.user.dto.request.ReqSignupDto;
 import com.bookstore.online.domain.user.entity.repository.UserRepository;
@@ -13,9 +13,11 @@ import org.springframework.stereotype.Service;
 public class CreateUserService {
 
   private final RedisTemplate<String, Object> redisTemplate;
+  private final UserRepository userRepository;
   private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-  public void cacheUser(String key, Object data) {
-    redisTemplate.opsForValue().set("user:" + key, data);
+  public void saveUser(ReqSignupDto dto) {
+    userRepository.save(dto.toEntity(passwordEncoder));
   }
+
 }

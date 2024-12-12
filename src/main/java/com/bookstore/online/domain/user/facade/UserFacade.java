@@ -3,13 +3,13 @@ package com.bookstore.online.domain.user.facade;
 import com.bookstore.online.domain.user.dto.request.ReqSigninDto;
 import com.bookstore.online.domain.user.dto.request.ReqSignupDto;
 import com.bookstore.online.domain.user.entity.UserEntity;
-import com.bookstore.online.domain.user.service.CreateUserService;
-import com.bookstore.online.domain.user.service.ReadUserService;
+import com.bookstore.online.domain.user.service.token.CreateTokenService;
+import com.bookstore.online.domain.user.service.user.CreateUserService;
+import com.bookstore.online.domain.user.service.user.ReadUserService;
 import com.bookstore.online.global.exception.DatabaseException;
 import com.bookstore.online.global.exception.SigninException;
 import com.bookstore.online.global.exception.SignupValidException;
 import com.bookstore.online.global.jwt.JwtProvider;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +24,7 @@ public class UserFacade {
 
   private final CreateUserService createUserService;
   private final ReadUserService readUserService;
+  private final CreateTokenService createTokenService;
   private final JwtProvider jwtProvider;
   private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -37,7 +38,7 @@ public class UserFacade {
       bindingResult.addError(fieldError);
     }
 
-    UserEntity user = (UserEntity) readUserService.readCacheUser(dto.userId(), UserEntity.class);
+    UserEntity user = readUserService.findUserByUserId(dto.userId());
     if (user != null) {
       FieldError fieldError = new FieldError(
           "duplicateUser",
@@ -51,7 +52,7 @@ public class UserFacade {
       throw new SignupValidException(bindingResult.getFieldErrors());
     }
     try {
-      createUserService.cacheUser(dto.userId(), dto.toEntity(passwordEncoder));
+      createUserService.saveUser(dto);
     } catch (Exception e) {
       e.printStackTrace();
       throw new DatabaseException("DB 에러");
@@ -61,7 +62,7 @@ public class UserFacade {
   }
 
   public String signin(ReqSigninDto dto, BindingResult bindingResult) {
-    UserEntity user = (UserEntity) readUserService.readCacheUser(dto.userId(), UserEntity.class);
+    UserEntity user = readUserService.findUserByUserId(dto.userId());
 
     if (bindingResult.hasFieldErrors()) {
       throw new SigninException("사용자 정보를 다시 확인하세요");
@@ -75,6 +76,10 @@ public class UserFacade {
       throw new SigninException("사용자 정보를 다시 확인하세요");
     }
 
-    return jwtProvider.generateAccessToken(user.getUserId());
+    String accessToken = jwtProvider.generateAccessToken(user.getUserId());
+
+    createTokenService.cacheAccessToken(accessToken, user.getUserId());
+
+    return accessToken;
   }
 }

@@ -19,12 +19,6 @@ public class UserController {
 
   private final UserFacade userFacade;
 
-//  @PostMapping("/signup")
-//  public ResponseEntity<?> signup(@RequestBody @Valid ReqSignupDto dto,
-//      BindingResult bindingResult) {
-//    return ResponseEntity.ok().body(userFacade.signup(dto, bindingResult));
-//  }
-
   @PostMapping("/signup")
   public ResponseEntity<?> signup(@RequestBody @Valid ReqSignupDto dto,
       BindingResult bindingResult) {
