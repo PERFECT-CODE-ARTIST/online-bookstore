@@ -199,6 +199,7 @@ gradle-app.setting
 
 # 프로퍼티즈 제외
 application.properties
+application.yml
 
 # yml
 application.yml
